@@ -2,29 +2,25 @@
 
 <project name="FRC Deployment" default="deploy">
 
-  <!--
-  The following properties can be defined to override system level
-  settings. These should not be touched unless you know what you're
-  doing. The primary use is to override the wpilib version when
-  working with older robots that can't compile with the latest
-  libraries.
-  -->
+	<!-- START OF CUSTOMIZED REGION -->
+	<!-- Check that properties file exists, fail if not. -->
+	<available file="./lib1816.properties" property="lib1816.config.present" />
+	<fail unless="lib1816.config.present" message="Config file for lib1816 location not present." />
 
-  <!-- By default the system version of WPI is used -->
-  <!-- <property name="version" value=""/> -->
+	<!-- Load properties file and configure directories for build -->
+	<property file="./lib1816.properties" />
+	<echo level="info">Starting 1816 customized build script</echo>
+	<echo level="info">Importing 1816-Utils-Java</echo>
+	<echo level="info">1816-Utils-Java Source at: ${lib1816.location}</echo>
 
-  <!-- By default the system team number is used -->
-  <!-- <property name="team-number" value=""/> -->
+	<!-- Add source directories to the build path -->
+	<property name="src.dir" value="src:${lib1816.location}" />
+	<!-- END OF CUSTOMIZED REGION -->
 
-  <!-- By default the target is set to 10.TE.AM.2 -->
-  <!-- <property name="target" value=""/> -->
+	<property file="${user.home}/wpilib/wpilib.properties" />
+	<property file="build.properties" />
+	<property file="${user.home}/wpilib/java/${version}/ant/build.properties" />
 
-  <!-- Any other property in build.properties can also be overridden. -->
-  
-  <property file="${user.home}/wpilib/wpilib.properties"/>
-  <property file="build.properties"/>
-  <property file="${user.home}/wpilib/java/${version}/ant/build.properties"/>
-  
-  <import file="${wpilib.ant.dir}/build.xml"/>
+	<import file="${wpilib.ant.dir}/build.xml" />
 
 </project> 
