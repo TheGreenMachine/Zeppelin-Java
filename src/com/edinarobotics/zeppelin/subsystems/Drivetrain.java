@@ -20,7 +20,7 @@ public class Drivetrain extends Subsystem1816 {
 		this.rearLeft = new CANTalon(rearLeft);
 		
 		slideDrive = new SlideDrive(this.frontLeft, this.frontRight, this.rearLeft, 
-				this.rearRight, middle);
+				this.rearRight, middle);				
 	}
 	
 	@Override
@@ -37,6 +37,22 @@ public class Drivetrain extends Subsystem1816 {
 		update();
 	}
 	
+	public CANTalon getRearRight() {
+		return rearRight;
+	}
+
+	public void setRearRight(CANTalon rearRight) {
+		this.rearRight = rearRight;
+	}
+
+	public CANTalon getRearLeft() {
+		return rearLeft;
+	}
+
+	public void setRearLeft(CANTalon rearLeft) {
+		this.rearLeft = rearLeft;
+	}
+
 	public void setDefaultCommand(Command command){
 		if(getDefaultCommand() != null){
 			super.getDefaultCommand().cancel();

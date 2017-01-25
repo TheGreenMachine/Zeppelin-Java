@@ -23,7 +23,6 @@ public class Components {
 		drivetrain = new Drivetrain(FRONT_RIGHT, FRONT_LEFT, MIDDLE, REAR_RIGHT, REAR_LEFT);
 		navX = new AHRS(Port.kMXP);
 		
-		
 	}
 	
 	/**

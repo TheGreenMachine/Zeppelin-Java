@@ -15,7 +15,7 @@ public class RotateXDegreesCommand extends Command implements PIDOutput {
 	
 	private Drivetrain drivetrain;
 	private AHRS gyro;
-	private double intialPosition;
+	private double initialPosition;
 	private float degrees;
 	
 	private PIDController turnController;
@@ -29,18 +29,20 @@ public class RotateXDegreesCommand extends Command implements PIDOutput {
     public RotateXDegreesCommand(float degrees) {
     	super("rotatexdegreescommand");
     	gyro = Components.getInstance().navX;
-    	turnController = new PIDController(kP,kI,kD,kF,gyro,this);
+    	
+    	turnController = new PIDController(kP, kI, kD, kF, gyro, this);
     	turnController.setInputRange(-180.0f, 180.0f);
     	turnController.setOutputRange(-1.0, 1.0);
     	turnController.setAbsoluteTolerance(2.0f);
     	turnController.setContinuous(true);
+    	
     	this.degrees = degrees;
     	drivetrain = Components.getInstance().drivetrain;
         requires(drivetrain);
     }
 
     protected void initialize() {
-    	intialPosition = gyro.getAngle();
+    	initialPosition = gyro.getAngle();
     	turnController.setSetpoint(degrees);
     }
 
