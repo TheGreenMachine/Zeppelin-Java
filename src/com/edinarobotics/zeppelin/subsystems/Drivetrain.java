@@ -13,6 +13,9 @@ public class Drivetrain extends Subsystem1816 {
 	
 	private double verticalStrafe, horizontalStrafe, rotation;
 	
+	private boolean slowMode;
+	private static final double SLOW_MODE_SPEED = 0.50;
+	
 	public Drivetrain(int frontRight, int frontLeft, int middle, int rearRight, 
 			int rearLeft) {
 		this.frontRight = new CANTalon(frontRight);
@@ -39,7 +42,13 @@ public class Drivetrain extends Subsystem1816 {
 	
 	@Override
 	public void update() {
-		slideDrive.drive(verticalStrafe, horizontalStrafe, rotation);		
+		if (slowMode) {
+			verticalStrafe *= SLOW_MODE_SPEED;
+			horizontalStrafe *= SLOW_MODE_SPEED;
+			rotation *= SLOW_MODE_SPEED;
+		}
+		
+		slideDrive.drive(verticalStrafe, horizontalStrafe, rotation);
 	}
 	 
 	public void setDrivetrain(double verticalStrafe, double horizontalStrafe, 
@@ -96,6 +105,11 @@ public class Drivetrain extends Subsystem1816 {
 
 	public void setHorizontalStrafe(double horizontalStrafe) {
 		this.horizontalStrafe = horizontalStrafe;
+	}
+	
+	public void setSlowMode(boolean slowMode) {
+		this.slowMode = slowMode;
+		update();
 	}
 
 }
