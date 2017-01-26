@@ -12,11 +12,11 @@ public class Components {
 	public Drivetrain drivetrain;
 	public AHRS navX;
 	
-	private static final int FRONT_LEFT = 1;
-	private static final int FRONT_RIGHT = 2;
+	private static final int FRONT_LEFT = 4;
+	private static final int FRONT_RIGHT = 5;
 	private static final int REAR_LEFT = 3;
-	private static final int REAR_RIGHT = 4;
-	private static final int MIDDLE = 5;
+	private static final int REAR_RIGHT = 6;
+	private static final int MIDDLE = 7;
 	
 	
 	private Components() {

@@ -14,6 +14,7 @@ public class SlideDrive extends RobotDrive {
 		super(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
 		
 		middle = new CANTalon(middleMotor);
+		middle.setInverted(true);
 	}
 	
 	public void drive(double verticalStrafe, double horizontalStrafe, double rotation) {

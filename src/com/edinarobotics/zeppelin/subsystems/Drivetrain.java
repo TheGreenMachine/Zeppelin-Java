@@ -15,8 +15,13 @@ public class Drivetrain extends Subsystem1816 {
 	public Drivetrain(int frontRight, int frontLeft, int middle, int rearRight, 
 			int rearLeft) {
 		this.frontRight = new CANTalon(frontRight);
+		
 		this.frontLeft = new CANTalon(frontLeft);
+		this.frontLeft.setInverted(true);
+		
 		this.rearRight = new CANTalon(rearRight);
+		this.rearRight.setInverted(true);
+		
 		this.rearLeft = new CANTalon(rearLeft);
 		
 		slideDrive = new SlideDrive(this.frontLeft, this.frontRight, this.rearLeft, 
@@ -27,7 +32,7 @@ public class Drivetrain extends Subsystem1816 {
 	public void update() {
 		slideDrive.drive(verticalStrafe, horizontalStrafe, rotation);
 	}
-	
+	 
 	public void setDrivetrain(double verticalStrafe, double horizontalStrafe, 
 			double rotation){
 		this.verticalStrafe = verticalStrafe;
