@@ -1,6 +1,7 @@
 package com.edinarobotics.zeppelin.subsystems;
 
 import com.ctre.CANTalon;
+import com.ctre.CANTalon.FeedbackDevice;
 import com.edinarobotics.utils.subsystems.Subsystem1816;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -15,14 +16,22 @@ public class Drivetrain extends Subsystem1816 {
 	public Drivetrain(int frontRight, int frontLeft, int middle, int rearRight, 
 			int rearLeft) {
 		this.frontRight = new CANTalon(frontRight);
+		this.frontRight.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		this.frontRight.setVoltageRampRate(100);
 		
 		this.frontLeft = new CANTalon(frontLeft);
+		this.frontLeft.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		this.frontLeft.setInverted(true);
+		this.frontLeft.setVoltageRampRate(100);
 		
 		this.rearRight = new CANTalon(rearRight);
+		this.rearRight.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		this.rearRight.setInverted(true);
+		this.rearRight.setVoltageRampRate(100);
 		
 		this.rearLeft = new CANTalon(rearLeft);
+		this.rearLeft.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		this.rearLeft.setVoltageRampRate(100);
 		
 		slideDrive = new SlideDrive(this.frontLeft, this.frontRight, this.rearLeft, 
 				this.rearRight, middle);				
@@ -30,7 +39,7 @@ public class Drivetrain extends Subsystem1816 {
 	
 	@Override
 	public void update() {
-		slideDrive.drive(verticalStrafe, horizontalStrafe, rotation);
+		slideDrive.drive(verticalStrafe, horizontalStrafe, rotation);		
 	}
 	 
 	public void setDrivetrain(double verticalStrafe, double horizontalStrafe, 

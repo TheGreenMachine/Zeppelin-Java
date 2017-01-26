@@ -3,6 +3,7 @@ package com.edinarobotics.zeppelin;
 import com.edinarobotics.zeppelin.subsystems.Drivetrain;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.I2C.Port;
 
 public class Components {
@@ -21,7 +22,7 @@ public class Components {
 	
 	private Components() {
 		drivetrain = new Drivetrain(FRONT_RIGHT, FRONT_LEFT, MIDDLE, REAR_RIGHT, REAR_LEFT);
-		navX = new AHRS(Port.kMXP);
+		navX = new AHRS(SPI.Port.kMXP);
 		
 	}
 	

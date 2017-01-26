@@ -2,6 +2,7 @@ package com.edinarobotics.zeppelin;
 
 import com.edinarobotics.utils.gamepad.Gamepad;
 import com.edinarobotics.zeppelin.commands.GamepadDriveCommand;
+import com.edinarobotics.zeppelin.commands.RotateXDegreesCommand;
 import com.edinarobotics.zeppelin.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -27,7 +28,7 @@ public class Zeppelin extends IterativeRobot {
 	}
 
     public void autonomousInit() {
-    	
+
     }
 
     public void autonomousPeriodic() {
@@ -40,7 +41,8 @@ public class Zeppelin extends IterativeRobot {
     }
 
     public void teleopPeriodic() {
-        Scheduler.getInstance().run();
+        Scheduler.getInstance().run(); 
+        System.out.println(Components.getInstance().navX.getAngle());
     }
     
     public void testPeriodic() {

@@ -1,6 +1,7 @@
 package com.edinarobotics.zeppelin.subsystems;
 
 import com.ctre.CANTalon;
+import com.ctre.CANTalon.FeedbackDevice;
 
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -14,7 +15,9 @@ public class SlideDrive extends RobotDrive {
 		super(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
 		
 		middle = new CANTalon(middleMotor);
+		middle.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		middle.setInverted(true);
+		middle.setVoltageRampRate(100);
 	}
 	
 	public void drive(double verticalStrafe, double horizontalStrafe, double rotation) {
