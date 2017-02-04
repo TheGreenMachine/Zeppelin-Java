@@ -4,42 +4,50 @@ import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 import com.edinarobotics.utils.subsystems.Subsystem1816;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class Drivetrain extends Subsystem1816 {
 
 	private CANTalon frontRight, frontLeft, rearRight, rearLeft;
 	private SlideDrive slideDrive;
-	
+	private Solenoid dropWheel;
+
 	private double verticalStrafe, horizontalStrafe, rotation;
-	
+
 	private boolean slowMode;
 	private static final double SLOW_MODE_SPEED = 0.50;
-	
+	private final int ENCODER_THRESHOLD = 25;
+
 	public Drivetrain(int frontRight, int frontLeft, int middle, int rearRight, 
-			int rearLeft) {
+			int rearLeft, int pcmID, int dropDown) {
 		this.frontRight = new CANTalon(frontRight);
 		this.frontRight.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		this.frontRight.setVoltageRampRate(100);
-		
+		//this.frontRight.changeControlMode(CANTalon.TalonControlMode.Position);
+
 		this.frontLeft = new CANTalon(frontLeft);
 		this.frontLeft.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		this.frontLeft.setInverted(true);
 		this.frontLeft.setVoltageRampRate(100);
-		
+		//this.frontLeft.changeControlMode(CANTalon.TalonControlMode.Position);
+
 		this.rearRight = new CANTalon(rearRight);
 		this.rearRight.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		this.rearRight.setInverted(true);
 		this.rearRight.setVoltageRampRate(100);
-		
+
 		this.rearLeft = new CANTalon(rearLeft);
 		this.rearLeft.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		this.rearLeft.setVoltageRampRate(100);
+
+		slideDrive = new SlideDrive(this.frontLeft, this.frontRight, 
+				this.rearLeft, this.rearRight, middle);
 		
-		slideDrive = new SlideDrive(this.frontLeft, this.frontRight, this.rearLeft, 
-				this.rearRight, middle);				
+		this.dropWheel = new Solenoid(pcmID, dropDown);
+		this.dropWheel.set(false);	
 	}
-	
+
 	@Override
 	public void update() {
 		if (slowMode) {
@@ -47,37 +55,53 @@ public class Drivetrain extends Subsystem1816 {
 			horizontalStrafe *= SLOW_MODE_SPEED;
 			rotation *= SLOW_MODE_SPEED;
 		}
-		
+
 		slideDrive.drive(verticalStrafe, horizontalStrafe, rotation);
 	}
-	 
-	public void setDrivetrain(double verticalStrafe, double horizontalStrafe, 
-			double rotation){
+
+	public void setDrivetrain(double verticalStrafe, double horizontalStrafe, double rotation) {
 		this.verticalStrafe = verticalStrafe;
 		this.horizontalStrafe = horizontalStrafe;
 		this.rotation = rotation;
-		
+
 		update();
 	}
 	
-	public CANTalon getRearRight() {
-		return rearRight;
+	public void toggleDropWheel() {
+		dropWheel.set(!dropWheel.get());
+	}
+	
+	public void setPosition(int ticks) {
+		frontLeft.setPosition(0.0);
+		frontRight.setPosition(0.0);
+		
+		frontLeft.set(ticks);
+		frontRight.set(ticks);
+	}
+	
+	public boolean isOnTarget(int ticks) {
+		return Math.abs(frontLeft.get() - ticks) < ENCODER_THRESHOLD &&
+				Math.abs(frontRight.get() - ticks) < ENCODER_THRESHOLD;
 	}
 
-	public void setRearRight(CANTalon rearRight) {
-		this.rearRight = rearRight;
+	public CANTalon getFrontRight() {
+		return frontRight;
 	}
 
-	public CANTalon getRearLeft() {
-		return rearLeft;
+	public void setFrontRight(CANTalon frontRight) {
+		this.frontRight = frontRight;
 	}
 
-	public void setRearLeft(CANTalon rearLeft) {
-		this.rearLeft = rearLeft;
+	public CANTalon getFrontLeft() {
+		return frontLeft;
 	}
 
-	public void setDefaultCommand(Command command){
-		if(getDefaultCommand() != null){
+	public void setFrontLeft(CANTalon frontLeft) {
+		this.frontLeft = frontLeft;
+	}
+
+	public void setDefaultCommand(Command command) {
+		if (getDefaultCommand() != null) {
 			super.getDefaultCommand().cancel();
 		}
 		super.setDefaultCommand(command);
@@ -106,10 +130,10 @@ public class Drivetrain extends Subsystem1816 {
 	public void setHorizontalStrafe(double horizontalStrafe) {
 		this.horizontalStrafe = horizontalStrafe;
 	}
-	
+
 	public void setSlowMode(boolean slowMode) {
 		this.slowMode = slowMode;
 		update();
 	}
-
+	
 }
