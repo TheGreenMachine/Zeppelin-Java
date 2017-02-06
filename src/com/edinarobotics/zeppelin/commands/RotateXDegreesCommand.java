@@ -15,7 +15,6 @@ public class RotateXDegreesCommand extends Command implements PIDOutput {
 	
 	private Drivetrain drivetrain;
 	private AHRS gyro;
-	private double initialPosition;
 	private float degrees;
 	
 	private PIDController turnController;
@@ -42,7 +41,6 @@ public class RotateXDegreesCommand extends Command implements PIDOutput {
     }
 
     protected void initialize() {
-    	initialPosition = gyro.getAngle();
     	turnController.setSetpoint(degrees);
     }
 

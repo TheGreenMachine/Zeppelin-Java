@@ -10,6 +10,7 @@ import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilter;
 import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilterSet;
 import com.edinarobotics.utils.gamepad.gamepadfilters.PowerFilter;
 import com.edinarobotics.zeppelin.commands.SetCollectorStateCommand;
+import com.edinarobotics.zeppelin.commands.ToggleAnchorCommand;
 import com.edinarobotics.zeppelin.commands.ToggleDropWheelCommand;
 import com.edinarobotics.zeppelin.subsystems.Collector.CollectorState;
 
@@ -33,9 +34,14 @@ public class Controls {
 		gamepad0.rightBumper().whenPressed(new SetCollectorStateCommand(CollectorState.LOW)); 
 		gamepad0.rightBumper().whenReleased(new SetCollectorStateCommand(CollectorState.OFF));
 		
+		//gamepad0.diamondDown().whenPressed(new SetShooterCommand(0.25));
+		//gamepad0.diamondDown().whenReleased(new SetShooterCommand(0.0));
+		
 		gamepad0.diamondDown().whenPressed(new ToggleDropWheelCommand());
+		gamepad0.diamondUp().whenPressed(new ToggleAnchorCommand());
 		//gamepad0.diamondDown().whenPressed(new DriveXInchesCommand(-12));
 		//gamepad0.diamondUp().whenPressed(new DriveXInchesCommand(12));
+		
 	} 
 	
 	/**

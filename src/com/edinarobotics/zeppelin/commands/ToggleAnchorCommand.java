@@ -5,19 +5,19 @@ import com.edinarobotics.zeppelin.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ToggleDropWheelCommand extends Command {
+public class ToggleAnchorCommand extends Command {
 
 	private Drivetrain drivetrain;
 	
-	public ToggleDropWheelCommand(){
-		super("toggledropwheelcommand");
+	public ToggleAnchorCommand(){
+		super("toggleanchorcommand");
 		drivetrain = Components.getInstance().drivetrain;
 		requires(drivetrain);
 	}
 	
 	@Override
 	protected void initialize() {
-		drivetrain.toggleDropWheel();
+		drivetrain.toggleAnchor();
 	}
 
 	@Override
@@ -39,5 +39,5 @@ public class ToggleDropWheelCommand extends Command {
 	protected void interrupted() {
 		
 	}
-
+	
 }

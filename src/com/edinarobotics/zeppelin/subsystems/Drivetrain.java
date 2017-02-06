@@ -11,7 +11,7 @@ public class Drivetrain extends Subsystem1816 {
 
 	private CANTalon frontRight, frontLeft, rearRight, rearLeft;
 	private SlideDrive slideDrive;
-	private Solenoid dropWheel;
+	private Solenoid dropWheel, anchor;
 
 	private double verticalStrafe, horizontalStrafe, rotation;
 
@@ -20,7 +20,7 @@ public class Drivetrain extends Subsystem1816 {
 	private final int ENCODER_THRESHOLD = 25;
 
 	public Drivetrain(int frontRight, int frontLeft, int middle, int rearRight, 
-			int rearLeft, int pcmID, int dropDown) {
+			int rearLeft, int pcmID, int dropDown, int anchor) {
 		this.frontRight = new CANTalon(frontRight);
 		this.frontRight.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		this.frontRight.setVoltageRampRate(100);
@@ -45,7 +45,10 @@ public class Drivetrain extends Subsystem1816 {
 				this.rearLeft, this.rearRight, middle);
 		
 		this.dropWheel = new Solenoid(pcmID, dropDown);
-		this.dropWheel.set(false);	
+		this.dropWheel.set(false);
+		
+		//this.anchor = new Solenoid(pcmID, anchor);
+		//this.anchor.set(false);
 	}
 
 	@Override
@@ -65,6 +68,10 @@ public class Drivetrain extends Subsystem1816 {
 		this.rotation = rotation;
 
 		update();
+	}
+	
+	public void toggleAnchor() {
+		anchor.set(!anchor.get());
 	}
 	
 	public void toggleDropWheel() {
