@@ -1,5 +1,7 @@
 package com.edinarobotics.zeppelin.commands;
 
+import com.edinarobotics.utils.pid.PIDConfig;
+import com.edinarobotics.utils.pid.PIDTuningManager;
 import com.edinarobotics.zeppelin.Components;
 import com.edinarobotics.zeppelin.subsystems.Drivetrain;
 import com.kauailabs.navx.frc.AHRS;
@@ -18,6 +20,7 @@ public class RotateXDegreesCommand extends Command implements PIDOutput {
 	private float degrees;
 	
 	private PIDController turnController;
+	private PIDConfig PIDConfig;
 	private double rotationSpeed;
 	
 	private static final double kP = 0.03;
@@ -35,6 +38,8 @@ public class RotateXDegreesCommand extends Command implements PIDOutput {
     	turnController.setAbsoluteTolerance(2.0f);
     	turnController.setContinuous(true);
     	
+    	PIDConfig = PIDTuningManager.getInstance().getPIDConfig("RotateXDegrees");
+    	
     	this.degrees = degrees;
     	drivetrain = Components.getInstance().drivetrain;
         requires(drivetrain);
@@ -46,6 +51,13 @@ public class RotateXDegreesCommand extends Command implements PIDOutput {
 
     protected void execute() {
     	turnController.enable();
+    	
+    	turnController.setPID(PIDConfig.getP(kP), PIDConfig.getI(kI), 
+    			PIDConfig.getD(kD), PIDConfig.getF(kF));
+    	
+    	PIDConfig.setSetpoint(degrees);
+    	PIDConfig.setValue(rotationSpeed);
+    	
     	drivetrain.setDrivetrain(0.0, 0.0, rotationSpeed);
     }
 
