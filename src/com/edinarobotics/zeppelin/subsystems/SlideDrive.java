@@ -17,7 +17,6 @@ public class SlideDrive extends RobotDrive {
 		middle = new CANTalon(middleMotor);
 		middle.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		middle.setInverted(true);
-		middle.setVoltageRampRate(100);
 	}
 	
 	public void drive(double verticalStrafe, double horizontalStrafe, double rotation) {

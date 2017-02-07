@@ -38,7 +38,10 @@ public class Controls {
 		//gamepad0.diamondDown().whenReleased(new SetShooterCommand(0.0));
 		
 		gamepad0.diamondDown().whenPressed(new ToggleDropWheelCommand());
+		gamepad0.diamondDown().whenReleased(new ToggleDropWheelCommand());
+		
 		gamepad0.diamondUp().whenPressed(new ToggleAnchorCommand());
+		gamepad0.diamondUp().whenReleased(new ToggleAnchorCommand());
 		//gamepad0.diamondDown().whenPressed(new DriveXInchesCommand(-12));
 		//gamepad0.diamondUp().whenPressed(new DriveXInchesCommand(12));
 		

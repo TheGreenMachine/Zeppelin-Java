@@ -2,6 +2,7 @@ package com.edinarobotics.zeppelin.subsystems;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
+import com.edinarobotics.utils.rate.RampRateHelper;
 import com.edinarobotics.utils.subsystems.Subsystem1816;
 
 import edu.wpi.first.wpilibj.Solenoid;
@@ -18,28 +19,28 @@ public class Drivetrain extends Subsystem1816 {
 	private boolean slowMode;
 	private static final double SLOW_MODE_SPEED = 0.50;
 	private final int ENCODER_THRESHOLD = 25;
+	
+	private RampRateHelper ramp;
 
 	public Drivetrain(int frontRight, int frontLeft, int middle, int rearRight, 
 			int rearLeft, int pcmID, int dropDown, int anchor) {
+		ramp = new RampRateHelper(0.7, true, false);
+		
 		this.frontRight = new CANTalon(frontRight);
 		this.frontRight.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		this.frontRight.setVoltageRampRate(100);
 		//this.frontRight.changeControlMode(CANTalon.TalonControlMode.Position);
 
 		this.frontLeft = new CANTalon(frontLeft);
 		this.frontLeft.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		this.frontLeft.setInverted(true);
-		this.frontLeft.setVoltageRampRate(100);
 		//this.frontLeft.changeControlMode(CANTalon.TalonControlMode.Position);
 
 		this.rearRight = new CANTalon(rearRight);
 		this.rearRight.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		this.rearRight.setInverted(true);
-		this.rearRight.setVoltageRampRate(100);
 
 		this.rearLeft = new CANTalon(rearLeft);
 		this.rearLeft.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		this.rearLeft.setVoltageRampRate(100);
+		this.rearLeft.setInverted(true);
 
 		slideDrive = new SlideDrive(this.frontLeft, this.frontRight, 
 				this.rearLeft, this.rearRight, middle);
@@ -47,8 +48,8 @@ public class Drivetrain extends Subsystem1816 {
 		this.dropWheel = new Solenoid(pcmID, dropDown);
 		this.dropWheel.set(false);
 		
-		//this.anchor = new Solenoid(pcmID, anchor);
-		//this.anchor.set(false);
+		this.anchor = new Solenoid(pcmID, anchor);
+		this.anchor.set(false);
 	}
 
 	@Override
@@ -58,7 +59,7 @@ public class Drivetrain extends Subsystem1816 {
 			horizontalStrafe *= SLOW_MODE_SPEED;
 			rotation *= SLOW_MODE_SPEED;
 		}
-
+		
 		slideDrive.drive(verticalStrafe, horizontalStrafe, rotation);
 	}
 

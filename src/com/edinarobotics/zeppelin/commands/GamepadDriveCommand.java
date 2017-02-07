@@ -19,6 +19,7 @@ public class GamepadDriveCommand extends Command {
     }
 
     protected void initialize() {
+    	
     }
 
     protected void execute() {
