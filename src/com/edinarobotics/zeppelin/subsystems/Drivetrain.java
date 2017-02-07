@@ -28,21 +28,15 @@ public class Drivetrain extends Subsystem1816 {
 
 		this.frontRight = new CANTalon(frontRight);
 		this.frontRight.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		// this.frontRight.changeControlMode(CANTalon.TalonControlMode.Position);
 
 		this.frontLeft = new CANTalon(frontLeft);
 		this.frontLeft.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		this.frontLeft.setInverted(true);
-		// this.frontLeft.changeControlMode(CANTalon.TalonControlMode.Position);
 
 		this.rearRight = new CANTalon(rearRight);
-		this.rearRight.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 
 		this.rearLeft = new CANTalon(rearLeft);
-		this.rearLeft.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		this.rearLeft.setInverted(true);
 
-		slideDrive = new SlideDrive(this.frontLeft, this.frontRight, this.rearLeft, 
+		slideDrive = new SlideDrive(this.frontLeft, this.rearLeft, this.frontRight, 
 				this.rearRight, middle);
 
 		this.dropWheel = new Solenoid(pcmID, dropDown);
@@ -60,7 +54,7 @@ public class Drivetrain extends Subsystem1816 {
 			rotation *= SLOW_MODE_SPEED;
 		}
 
-		slideDrive.drive(verticalStrafe, horizontalStrafe, rotation);
+		slideDrive.drive(-verticalStrafe, horizontalStrafe, rotation);
 	}
 
 	public void setDrivetrain(double verticalStrafe, double horizontalStrafe, double rotation) {
