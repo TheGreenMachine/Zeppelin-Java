@@ -2,11 +2,13 @@ package com.edinarobotics.zeppelin.subsystems;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
+import com.ctre.CANTalon.TalonControlMode;
 import com.edinarobotics.utils.rate.RampRateHelper;
 import com.edinarobotics.utils.subsystems.Subsystem1816;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drivetrain extends Subsystem1816 {
 
@@ -33,11 +35,14 @@ public class Drivetrain extends Subsystem1816 {
 		this.frontLeft.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 
 		this.rearRight = new CANTalon(rearRight);
+		this.rearRight.changeControlMode(TalonControlMode.Follower);
+		this.rearRight.set(frontRight);
 
 		this.rearLeft = new CANTalon(rearLeft);
+		this.rearLeft.changeControlMode(TalonControlMode.Follower);
+		this.rearLeft.set(frontLeft);
 
-		slideDrive = new SlideDrive(this.frontLeft, this.rearLeft, this.frontRight, 
-				this.rearRight, middle);
+		slideDrive = new SlideDrive(this.frontLeft, this.frontRight, middle);
 
 		this.dropWheel = new Solenoid(pcmID, dropDown);
 		this.dropWheel.set(false);
@@ -55,6 +60,9 @@ public class Drivetrain extends Subsystem1816 {
 		}
 
 		slideDrive.drive(-verticalStrafe, horizontalStrafe, rotation);
+		
+		SmartDashboard.putNumber("Left encoder value: ", frontLeft.getEncPosition());
+		SmartDashboard.putNumber("Right encoder value: ", frontRight.getEncPosition());
 	}
 
 	public void setDrivetrain(double verticalStrafe, double horizontalStrafe, double rotation) {
