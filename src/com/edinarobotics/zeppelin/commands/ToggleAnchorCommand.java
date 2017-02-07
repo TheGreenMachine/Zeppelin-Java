@@ -8,13 +8,13 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ToggleAnchorCommand extends Command {
 
 	private Drivetrain drivetrain;
-	
-	public ToggleAnchorCommand(){
+
+	public ToggleAnchorCommand() {
 		super("toggleanchorcommand");
 		drivetrain = Components.getInstance().drivetrain;
 		requires(drivetrain);
 	}
-	
+
 	@Override
 	protected void initialize() {
 		drivetrain.toggleAnchor();
@@ -24,7 +24,7 @@ public class ToggleAnchorCommand extends Command {
 	protected void execute() {
 
 	}
-	
+
 	@Override
 	protected boolean isFinished() {
 		return true;
@@ -32,12 +32,12 @@ public class ToggleAnchorCommand extends Command {
 
 	@Override
 	protected void end() {
-		
+
 	}
 
 	@Override
 	protected void interrupted() {
-		
+
 	}
-	
+
 }

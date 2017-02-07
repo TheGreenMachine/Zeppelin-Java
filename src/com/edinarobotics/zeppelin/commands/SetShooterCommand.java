@@ -7,10 +7,10 @@ import com.edinarobotics.zeppelin.subsystems.Shooter;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class SetShooterCommand extends Command {
-	
+
 	private Shooter shooter;
 	private int target;
-	
+
 	private static final double TARGET_SPEED = .9;
 
 	public SetShooterCommand(int target) {
@@ -19,7 +19,7 @@ public class SetShooterCommand extends Command {
 		shooter = Components.getInstance().shooter;
 		requires(shooter);
 	}
-	
+
 	@Override
 	protected void initialize() {
 
@@ -28,8 +28,8 @@ public class SetShooterCommand extends Command {
 	@Override
 	protected void execute() {
 		CANTalon talon = shooter.getShooter();
-		
-		if(talon.getSpeed()<target)
+
+		if (talon.getSpeed() < target)
 			talon.set(TARGET_SPEED);
 		else
 			talon.set(0.0);

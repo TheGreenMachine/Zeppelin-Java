@@ -19,21 +19,21 @@ public class Drivetrain extends Subsystem1816 {
 	private boolean slowMode;
 	private static final double SLOW_MODE_SPEED = 0.50;
 	private final int ENCODER_THRESHOLD = 25;
-	
+
 	private RampRateHelper ramp;
 
 	public Drivetrain(int frontRight, int frontLeft, int middle, int rearRight, 
 			int rearLeft, int pcmID, int dropDown, int anchor) {
 		ramp = new RampRateHelper(0.7, true, false);
-		
+
 		this.frontRight = new CANTalon(frontRight);
 		this.frontRight.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		//this.frontRight.changeControlMode(CANTalon.TalonControlMode.Position);
+		// this.frontRight.changeControlMode(CANTalon.TalonControlMode.Position);
 
 		this.frontLeft = new CANTalon(frontLeft);
 		this.frontLeft.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		this.frontLeft.setInverted(true);
-		//this.frontLeft.changeControlMode(CANTalon.TalonControlMode.Position);
+		// this.frontLeft.changeControlMode(CANTalon.TalonControlMode.Position);
 
 		this.rearRight = new CANTalon(rearRight);
 		this.rearRight.setFeedbackDevice(FeedbackDevice.QuadEncoder);
@@ -42,12 +42,12 @@ public class Drivetrain extends Subsystem1816 {
 		this.rearLeft.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		this.rearLeft.setInverted(true);
 
-		slideDrive = new SlideDrive(this.frontLeft, this.frontRight, 
-				this.rearLeft, this.rearRight, middle);
-		
+		slideDrive = new SlideDrive(this.frontLeft, this.frontRight, this.rearLeft, 
+				this.rearRight, middle);
+
 		this.dropWheel = new Solenoid(pcmID, dropDown);
 		this.dropWheel.set(false);
-		
+
 		this.anchor = new Solenoid(pcmID, anchor);
 		this.anchor.set(false);
 	}
@@ -59,7 +59,7 @@ public class Drivetrain extends Subsystem1816 {
 			horizontalStrafe *= SLOW_MODE_SPEED;
 			rotation *= SLOW_MODE_SPEED;
 		}
-		
+
 		slideDrive.drive(verticalStrafe, horizontalStrafe, rotation);
 	}
 
@@ -70,26 +70,26 @@ public class Drivetrain extends Subsystem1816 {
 
 		update();
 	}
-	
+
 	public void toggleAnchor() {
 		anchor.set(!anchor.get());
 	}
-	
+
 	public void toggleDropWheel() {
 		dropWheel.set(!dropWheel.get());
 	}
-	
+
 	public void setPosition(int ticks) {
 		frontLeft.setPosition(0.0);
 		frontRight.setPosition(0.0);
-		
+
 		frontLeft.set(ticks);
 		frontRight.set(ticks);
 	}
-	
+
 	public boolean isOnTarget(int ticks) {
-		return Math.abs(frontLeft.get() - ticks) < ENCODER_THRESHOLD &&
-				Math.abs(frontRight.get() - ticks) < ENCODER_THRESHOLD;
+		return Math.abs(frontLeft.get() - ticks) < ENCODER_THRESHOLD
+				&& Math.abs(frontRight.get() - ticks) < ENCODER_THRESHOLD;
 	}
 
 	public CANTalon getFrontRight() {
@@ -143,5 +143,5 @@ public class Drivetrain extends Subsystem1816 {
 		this.slowMode = slowMode;
 		update();
 	}
-	
+
 }
