@@ -31,7 +31,7 @@ public class RotateXDegreesCommand extends Command implements PIDOutput {
 
 		turnController = new PIDController(kP, kI, kD, kF, gyro, this);
 		turnController.setInputRange(-180.0f, 180.0f);
-		turnController.setOutputRange(-1.0, 1.0);
+		turnController.setOutputRange(-0.5, 0.5);
 		turnController.setAbsoluteTolerance(2.0f);
 		turnController.setContinuous(true);
 

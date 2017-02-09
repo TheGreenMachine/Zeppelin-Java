@@ -4,13 +4,12 @@ import com.edinarobotics.zeppelin.Components;
 import com.edinarobotics.zeppelin.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveXInchesCommand extends Command {
 
 	private Drivetrain drivetrain;
 	private int inches;
-
-	private final double CONVERSION_RATE = 15.916;
 
 	public DriveXInchesCommand(int inches) {
 		super("drivexinchescommand");
@@ -21,16 +20,21 @@ public class DriveXInchesCommand extends Command {
 
 	@Override
 	protected void initialize() {
-		drivetrain.setPosition((int) (inches * CONVERSION_RATE));
+		drivetrain.getFrontLeft().setPosition(0);
+		drivetrain.getFrontRight().setPosition(0);
 	}
 
 	@Override
 	protected void execute() {
+		drivetrain.getFrontLeft().set(-inches);
+		drivetrain.getFrontRight().set(inches);
+		SmartDashboard.putNumber("Left encoder value: ", -drivetrain.getFrontLeft().getPosition());
+		SmartDashboard.putNumber("Right encoder value: ", drivetrain.getFrontLeft().getPosition());
 	}
 
 	@Override
 	protected boolean isFinished() {
-		return drivetrain.isOnTarget((int) (inches * CONVERSION_RATE));
+		return drivetrain.getFrontLeft().getPosition() == -inches && drivetrain.getFrontRight().getPosition() == inches;
 	}
 
 	@Override

@@ -3,6 +3,8 @@ package com.edinarobotics.zeppelin.subsystems;
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.TalonControlMode;
+import com.edinarobotics.utils.pid.PIDConfig;
+import com.edinarobotics.utils.pid.PIDTuningManager;
 import com.edinarobotics.utils.rate.RampRateHelper;
 import com.edinarobotics.utils.subsystems.Subsystem1816;
 
@@ -23,6 +25,10 @@ public class Drivetrain extends Subsystem1816 {
 	private final int ENCODER_THRESHOLD = 25;
 
 	private RampRateHelper ramp;
+	
+	private static final double kP = 1.00;
+	private static final double kI = 0.00;
+	private static final double kD = 0.00;
 
 	public Drivetrain(int frontRight, int frontLeft, int middle, int rearRight, 
 			int rearLeft, int pcmID, int dropDown, int anchor) {
@@ -30,20 +36,36 @@ public class Drivetrain extends Subsystem1816 {
 
 		this.frontRight = new CANTalon(frontRight);
 		this.frontRight.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		this.frontRight.setPID(kP, kI, kD);
+		this.frontRight.configEncoderCodesPerRev(40);
+		this.frontRight.enableBrakeMode(true);
+		this.frontRight.setVoltageRampRate(100);
+		this.frontRight.changeControlMode(TalonControlMode.Position);
+		this.frontRight.reverseSensor(true);
+		this.frontRight.setPosition(0);
 
 		this.frontLeft = new CANTalon(frontLeft);
 		this.frontLeft.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		this.frontLeft.setPID(kP, kI, kD);
+		this.frontLeft.configEncoderCodesPerRev(40);
+		this.frontLeft.enableBrakeMode(true);
+		this.frontLeft.setVoltageRampRate(100);
+		this.frontLeft.changeControlMode(TalonControlMode.Position);
+		this.frontLeft.reverseSensor(true);
+		this.frontLeft.setPosition(0);
 
 		this.rearRight = new CANTalon(rearRight);
 		this.rearRight.changeControlMode(TalonControlMode.Follower);
 		this.rearRight.set(frontRight);
+		this.rearRight.enableBrakeMode(true);
 
 		this.rearLeft = new CANTalon(rearLeft);
 		this.rearLeft.changeControlMode(TalonControlMode.Follower);
 		this.rearLeft.set(frontLeft);
+		this.rearLeft.enableBrakeMode(true);
 
 		slideDrive = new SlideDrive(this.frontLeft, this.frontRight, middle);
-
+		
 		this.dropWheel = new Solenoid(pcmID, dropDown);
 		this.dropWheel.set(false);
 
@@ -58,11 +80,11 @@ public class Drivetrain extends Subsystem1816 {
 			horizontalStrafe *= SLOW_MODE_SPEED;
 			rotation *= SLOW_MODE_SPEED;
 		}
-
+		
 		slideDrive.drive(-verticalStrafe, horizontalStrafe, rotation);
 		
-		SmartDashboard.putNumber("Left encoder value: ", frontLeft.getEncPosition());
-		SmartDashboard.putNumber("Right encoder value: ", frontRight.getEncPosition());
+		SmartDashboard.putNumber("Left encoder value: ", frontLeft.getPosition());
+		SmartDashboard.putNumber("Right encoder value: ", frontRight.getPosition());
 	}
 
 	public void setDrivetrain(double verticalStrafe, double horizontalStrafe, double rotation) {
@@ -81,33 +103,36 @@ public class Drivetrain extends Subsystem1816 {
 		dropWheel.set(!dropWheel.get());
 	}
 
-	public void setPosition(int ticks) {
+	public void setPosition() {
 		frontLeft.setPosition(0.0);
 		frontRight.setPosition(0.0);
-
+	}
+	
+	public void setTarget(int ticks) {
+		frontLeft.enable();
+		frontRight.enable();
+		
 		frontLeft.set(ticks);
 		frontRight.set(ticks);
+		
+	}
+	
+	public void changeControlMode(TalonControlMode mode) {
+		frontLeft.changeControlMode(mode);
+		frontRight.changeControlMode(mode);
 	}
 
 	public boolean isOnTarget(int ticks) {
 		return Math.abs(frontLeft.get() - ticks) < ENCODER_THRESHOLD
 				&& Math.abs(frontRight.get() - ticks) < ENCODER_THRESHOLD;
 	}
-
+	
 	public CANTalon getFrontRight() {
 		return frontRight;
 	}
-
-	public void setFrontRight(CANTalon frontRight) {
-		this.frontRight = frontRight;
-	}
-
+	
 	public CANTalon getFrontLeft() {
 		return frontLeft;
-	}
-
-	public void setFrontLeft(CANTalon frontLeft) {
-		this.frontLeft = frontLeft;
 	}
 
 	public void setDefaultCommand(Command command) {

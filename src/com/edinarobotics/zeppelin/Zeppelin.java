@@ -7,6 +7,7 @@ import com.edinarobotics.zeppelin.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 public class Zeppelin extends IterativeRobot {
 
@@ -29,7 +30,7 @@ public class Zeppelin extends IterativeRobot {
 
 	public void teleopInit() {
 		Gamepad gamepad0 = Controls.getInstance().gamepad0;
-		drivetrain.setDefaultCommand(new GamepadDriveCommand(gamepad0));
+		//drivetrain.setDefaultCommand(new GamepadDriveCommand(gamepad0));
 	}
  
 	public void teleopPeriodic() {
@@ -37,6 +38,7 @@ public class Zeppelin extends IterativeRobot {
 	}
  
 	public void testInit() {
+		LiveWindow.setEnabled(false);
 		teleopInit();
 	}
 
