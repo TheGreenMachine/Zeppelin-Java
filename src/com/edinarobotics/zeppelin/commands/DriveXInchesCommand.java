@@ -28,6 +28,7 @@ public class DriveXInchesCommand extends Command {
 	protected void execute() {
 		drivetrain.getFrontLeft().set(-inches);
 		drivetrain.getFrontRight().set(inches);
+		
 		SmartDashboard.putNumber("Left encoder value: ", -drivetrain.getFrontLeft().getPosition());
 		SmartDashboard.putNumber("Right encoder value: ", drivetrain.getFrontLeft().getPosition());
 	}

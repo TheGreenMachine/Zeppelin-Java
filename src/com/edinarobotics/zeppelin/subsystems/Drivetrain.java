@@ -26,7 +26,7 @@ public class Drivetrain extends Subsystem1816 {
 
 	private RampRateHelper ramp;
 	
-	private static final double kP = 1.00;
+	private static final double kP = 0.50;
 	private static final double kI = 0.00;
 	private static final double kD = 0.00;
 
@@ -37,7 +37,7 @@ public class Drivetrain extends Subsystem1816 {
 		this.frontRight = new CANTalon(frontRight);
 		this.frontRight.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		this.frontRight.setPID(kP, kI, kD);
-		this.frontRight.configEncoderCodesPerRev(40);
+		this.frontRight.configEncoderCodesPerRev(10);
 		this.frontRight.enableBrakeMode(true);
 		this.frontRight.setVoltageRampRate(100);
 		this.frontRight.changeControlMode(TalonControlMode.Position);
@@ -47,7 +47,7 @@ public class Drivetrain extends Subsystem1816 {
 		this.frontLeft = new CANTalon(frontLeft);
 		this.frontLeft.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		this.frontLeft.setPID(kP, kI, kD);
-		this.frontLeft.configEncoderCodesPerRev(40);
+		this.frontLeft.configEncoderCodesPerRev(10);
 		this.frontLeft.enableBrakeMode(true);
 		this.frontLeft.setVoltageRampRate(100);
 		this.frontLeft.changeControlMode(TalonControlMode.Position);
