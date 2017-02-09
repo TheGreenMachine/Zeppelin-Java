@@ -3,8 +3,6 @@ package com.edinarobotics.zeppelin.subsystems;
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.TalonControlMode;
-import com.edinarobotics.utils.pid.PIDConfig;
-import com.edinarobotics.utils.pid.PIDTuningManager;
 import com.edinarobotics.utils.rate.RampRateHelper;
 import com.edinarobotics.utils.subsystems.Subsystem1816;
 
