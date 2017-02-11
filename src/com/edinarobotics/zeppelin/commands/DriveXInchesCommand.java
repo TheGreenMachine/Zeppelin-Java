@@ -2,45 +2,88 @@ package com.edinarobotics.zeppelin.commands;
 
 import com.edinarobotics.zeppelin.Components;
 import com.edinarobotics.zeppelin.subsystems.Drivetrain;
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveXInchesCommand extends Command {
 
 	private Drivetrain drivetrain;
 	private int inches;
+	private int ticks;
+	private final int CONVERSION_FACTOR = 39;
+	private final int TARGET_THRESHOLD = 5;
+
+	private AHRS gyro;
+	private double heading;
 
 	public DriveXInchesCommand(int inches) {
 		super("drivexinchescommand");
-		this.inches = inches;
 		drivetrain = Components.getInstance().drivetrain;
+		gyro = Components.getInstance().navX;
+		this.inches = inches;
+		ticks = (inches * CONVERSION_FACTOR) + drivetrain.getFrontLeft().getEncPosition();
 		requires(drivetrain);
 	}
 
 	@Override
 	protected void initialize() {
-		drivetrain.getFrontLeft().setPosition(0);
-		drivetrain.getFrontRight().setPosition(0);
+		heading = gyro.getAngle();
+		System.out.println("Initializing...");
 	}
 
 	@Override
 	protected void execute() {
-		drivetrain.getFrontLeft().set(-inches);
-		drivetrain.getFrontRight().set(inches);
-		
-		SmartDashboard.putNumber("Left encoder value: ", -drivetrain.getFrontLeft().getPosition());
-		SmartDashboard.putNumber("Right encoder value: ", drivetrain.getFrontLeft().getPosition());
+		double currentLeftValue = drivetrain.getFrontLeft().getEncPosition();
+		double currentHeading = gyro.getAngle();
+
+		if (ticks > currentLeftValue) {
+			if (currentLeftValue > (ticks - 1000)) {
+
+				if (Math.abs(currentHeading - heading) > 0.3) {
+					drivetrain.setDrivetrain(0.30, 0.0, -(currentHeading - heading) * .2);
+				} else {
+					drivetrain.setDrivetrain(0.30, 0, 0);
+				}
+				System.out.println("1");
+			} else {
+				if (Math.abs(currentHeading - heading) > 0.3) {
+					drivetrain.setDrivetrain(0.70, 0, -(currentHeading - heading) * .1);
+				} else {
+					drivetrain.setDrivetrain(0.70, 0, 0);
+				}
+				System.out.println("2");
+			}
+		} else {
+			if (currentLeftValue < (ticks + 1000)) {
+				if (Math.abs(currentHeading - heading) > 0.3) {
+					drivetrain.setDrivetrain(-0.30, 0, (currentHeading - heading) * .1);
+				} else {
+					drivetrain.setDrivetrain(-0.30, 0, 0);
+				}
+				System.out.println("3");
+			} else {
+				if (Math.abs(currentHeading - heading) > 0.3) {
+					drivetrain.setDrivetrain(-0.70, 0, (currentHeading - heading) * .1);
+				} else {
+					drivetrain.setDrivetrain(-0.70, 0, 0);
+				}
+				System.out.println("4");
+			}
+		}
+
+		System.out.println("Left value: " + currentLeftValue + "; Left target: " + ticks);
+		System.out.println("Current heading: " + currentHeading + "; Target heading: " + heading);
 	}
 
 	@Override
 	protected boolean isFinished() {
-		return drivetrain.getFrontLeft().getPosition() == -inches && drivetrain.getFrontRight().getPosition() == inches;
+		return Math.abs(drivetrain.getFrontLeft().getEncPosition() - ticks) < TARGET_THRESHOLD;
 	}
 
 	@Override
 	protected void end() {
-		drivetrain.setDrivetrain(0, 0, 0);
+		drivetrain.setDrivetrain(0.0, 0.0, 0.0);
 	}
 
 	@Override

@@ -20,7 +20,7 @@ public class RotateXDegreesCommand extends Command implements PIDOutput {
 	private PIDConfig PIDConfig;
 	private double rotationSpeed;
 
-	private static final double kP = 0.03;
+	private static final double kP = 0.015;
 	private static final double kI = 0.00;
 	private static final double kD = 0.00;
 	private static final double kF = 0.00;
@@ -30,7 +30,7 @@ public class RotateXDegreesCommand extends Command implements PIDOutput {
 		gyro = Components.getInstance().navX;
 
 		turnController = new PIDController(kP, kI, kD, kF, gyro, this);
-		turnController.setInputRange(-180.0f, 180.0f);
+		turnController.setInputRange(-360.0f, 360.0f);
 		turnController.setOutputRange(-0.5, 0.5);
 		turnController.setAbsoluteTolerance(2.0f);
 		turnController.setContinuous(true);
@@ -51,11 +51,13 @@ public class RotateXDegreesCommand extends Command implements PIDOutput {
 
 		turnController.setPID(PIDConfig.getP(kP), PIDConfig.getI(kI), 
 				PIDConfig.getD(kD), PIDConfig.getF(kF));
-
+		
 		PIDConfig.setSetpoint(degrees);
 		PIDConfig.setValue(rotationSpeed);
 
 		drivetrain.setDrivetrain(0.0, 0.0, rotationSpeed);
+		System.out.println("Target:" + degrees);
+		System.out.println("Current: " + gyro.getAngle());
 	}
 
 	protected boolean isFinished() {

@@ -19,7 +19,7 @@ public class Components {
 	public AHRS navX;
 	public Compressor compressor;
 
-	public Encoder frontLeftEncoder, frontRightEncoder;
+	public Encoder rearRightEncoder;
 	
 	// CANTalon Constants
 		// Drivetrain
@@ -48,8 +48,8 @@ public class Components {
 	// Encoder Constants
 	private static final int FRONT_LEFT_ENCODER_A = 4;
 	private static final int FRONT_LEFT_ENCODER_B = 5;	
-	private static final int FRONT_RIGHT_ENCODER_A = 0;
-	private static final int FRONT_RIGHT_ENCODER_B = 1;	
+	private static final int REAR_RIGHT_ENCODER_A = 0;
+	private static final int REAR_RIGHT_ENCODER_B = 1;	
 	// End Encoder Constants
 	
 	private Components() {
@@ -58,7 +58,8 @@ public class Components {
 		navX = new AHRS(SPI.Port.kMXP);
 	
 		// frontLeftEncoder = new Encoder(FRONT_LEFT_ENCODER_A, FRONT_LEFT_ENCODER_B);
-		// frontRightEncoder = new Encoder(FRONT_RIGHT_ENCODER_A, FRONT_RIGHT_ENCODER_B);
+		rearRightEncoder = new Encoder(REAR_RIGHT_ENCODER_A, REAR_RIGHT_ENCODER_B);
+		rearRightEncoder.setDistancePerPulse(0.002);
 		
 		collector = new Collector(COLLECTOR);
 		
