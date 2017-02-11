@@ -32,7 +32,7 @@ public class Zeppelin extends IterativeRobot {
 
 	public void teleopInit() {
 		Gamepad gamepad0 = Controls.getInstance().gamepad0;
-		//drivetrain.setDefaultCommand(new GamepadDriveCommand(gamepad0));
+		drivetrain.setDefaultCommand(new GamepadDriveCommand(gamepad0));
 		this.serialPort = new SerialPort(9600, SerialPort.Port.kMXP, 8,					//examine settings in RoboRealm:Serial to get the proper inputs. inputs in order are: baud rate, port type, data bits, parity, stop bits
 				SerialPort.Parity.kNone, SerialPort.StopBits.kOne);
 	}
