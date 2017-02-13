@@ -44,23 +44,11 @@ public class Components {
 	private static final int DROP_WHEEL_ID = 0;
 	private static final int ANCHOR_ID = 1;
 	// End Pneumatic Constants
-		
-	// Encoder Constants
-	private static final int FRONT_LEFT_ENCODER_A = 4;
-	private static final int FRONT_LEFT_ENCODER_B = 5;	
-	private static final int REAR_RIGHT_ENCODER_A = 0;
-	private static final int REAR_RIGHT_ENCODER_B = 1;	
-	// End Encoder Constants
 	
 	private Components() {
 		drivetrain = new Drivetrain(FRONT_RIGHT, FRONT_LEFT, MIDDLE, REAR_RIGHT, 
 				REAR_LEFT, PCM_ID, DROP_WHEEL_ID, ANCHOR_ID);
 		navX = new AHRS(SPI.Port.kMXP);
-	
-		// frontLeftEncoder = new Encoder(FRONT_LEFT_ENCODER_A, FRONT_LEFT_ENCODER_B);
-		rearRightEncoder = new Encoder(REAR_RIGHT_ENCODER_A, REAR_RIGHT_ENCODER_B);
-		rearRightEncoder.setDistancePerPulse(0.002);
-		
 		collector = new Collector(COLLECTOR);
 		
 		//shooter = new Shooter(SHOOTER);

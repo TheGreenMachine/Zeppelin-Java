@@ -22,7 +22,7 @@ public class SetShooterCommand extends Command {
 
 	@Override
 	protected void initialize() {
-
+		
 	}
 
 	@Override
