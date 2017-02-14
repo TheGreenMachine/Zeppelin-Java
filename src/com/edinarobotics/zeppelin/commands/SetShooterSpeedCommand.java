@@ -1,12 +1,26 @@
 package com.edinarobotics.zeppelin.commands;
 
+import com.edinarobotics.zeppelin.Components;
+import com.edinarobotics.zeppelin.subsystems.Shooter;
+import com.edinarobotics.zeppelin.subsystems.Shooter.ShooterSpeed;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 public class SetShooterSpeedCommand extends Command {
-
+	
+	private Shooter shooter;
+	private ShooterSpeed shooterSpeed;
+	
+	public SetShooterSpeedCommand(ShooterSpeed shooterSpeed) {
+		super("setshooterspeedcommand");
+		shooter = Components.getInstance().shooter;
+		this.shooterSpeed = shooterSpeed;
+		requires(shooter);
+	}
+	
 	@Override
 	protected void initialize() {
-		
+		shooter.setSpeed(shooterSpeed);
 	}
 
 	@Override
@@ -16,7 +30,7 @@ public class SetShooterSpeedCommand extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return false;
+		return true;
 	}
 
 	@Override
