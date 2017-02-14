@@ -14,7 +14,7 @@ public class RotateXDegreesCommand extends Command implements PIDOutput {
 
 	private Drivetrain drivetrain;
 	private AHRS gyro;
-	private float degrees;
+	private float degrees, initialDegrees;
 
 	private PIDController turnController;
 	private PIDConfig PIDConfig;
@@ -30,7 +30,6 @@ public class RotateXDegreesCommand extends Command implements PIDOutput {
 		gyro = Components.getInstance().navX;
 
 		turnController = new PIDController(kP, kI, kD, kF, gyro, this);
-		turnController.setInputRange(-360.0f, 360.0f);
 		turnController.setOutputRange(-0.5, 0.5);
 		turnController.setAbsoluteTolerance(2.0f);
 		turnController.setContinuous(true);
@@ -38,12 +37,13 @@ public class RotateXDegreesCommand extends Command implements PIDOutput {
 		PIDConfig = PIDTuningManager.getInstance().getPIDConfig("RotateXDegrees");
 
 		this.degrees = degrees;
+		initialDegrees = (float) gyro.getAngle();
 		drivetrain = Components.getInstance().drivetrain;
 		requires(drivetrain);
 	}
 
 	protected void initialize() {
-		turnController.setSetpoint(degrees);
+		turnController.setSetpoint(degrees + initialDegrees);
 	}
 
 	protected void execute() {
@@ -52,11 +52,11 @@ public class RotateXDegreesCommand extends Command implements PIDOutput {
 		turnController.setPID(PIDConfig.getP(kP), PIDConfig.getI(kI), 
 				PIDConfig.getD(kD), PIDConfig.getF(kF));
 		
-		PIDConfig.setSetpoint(degrees);
+		PIDConfig.setSetpoint(degrees + initialDegrees);
 		PIDConfig.setValue(rotationSpeed);
 
 		drivetrain.setDrivetrain(0.0, 0.0, rotationSpeed);
-		System.out.println("Target:" + degrees);
+		System.out.println("Target:" + (degrees + initialDegrees));
 		System.out.println("Current: " + gyro.getAngle());
 	}
 
