@@ -2,11 +2,14 @@ package com.edinarobotics.zeppelin;
 
 import com.edinarobotics.utils.gamepad.Gamepad;
 import com.edinarobotics.utils.pid.PIDTuningManager;
+import com.edinarobotics.zeppelin.commands.AutonomousCommand;
+import com.edinarobotics.zeppelin.commands.AutonomousCommand.AutoMode;
 import com.edinarobotics.zeppelin.commands.GamepadDriveCommand;
 import com.edinarobotics.zeppelin.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
@@ -23,7 +26,8 @@ public class Zeppelin extends IterativeRobot {
 	}
 
 	public void autonomousInit() {
-
+		Command autoCommand = new AutonomousCommand(AutoMode.DEFAULT);
+		autoCommand.start();
 	}
 
 	public void autonomousPeriodic() {

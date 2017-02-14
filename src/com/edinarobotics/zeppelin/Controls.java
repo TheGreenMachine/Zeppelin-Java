@@ -47,7 +47,8 @@ public class Controls {
 		
 		gamepad0.dPadLeft().whenPressed(new RotateXDegreesCommand(-90f));
 		gamepad0.dPadDown().whenPressed(new RotateXDegreesCommand(0f));
-		gamepad0.dPadRight().whenPressed(new RotateXDegreesCommand(90f));		
+		gamepad0.dPadRight().whenPressed(new RotateXDegreesCommand(90f));
+		
 	}
 
 	/**
