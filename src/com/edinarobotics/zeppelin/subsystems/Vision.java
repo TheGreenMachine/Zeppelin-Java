@@ -17,9 +17,12 @@ public class Vision extends Subsystem1816 {
 	private final int CAMERA_HEIGHT = 480;
 
 	private final int X_TOLERANCE = 30;
-	private final int Y_TOLERANCE = 30;
-	private final int SLOW_RANGE = 30;
-	private final int ENDING_TOLERANCE = 3;
+	private final int X_SLOW_RANGE = 30;
+	private final int X_ENDING_TOLERANCE = 3;
+	
+	private final int ENDING_AREA = 32000;
+	private final int SLOW_RANGE_AREA = 6000;
+	private final int ENDING_TOLERANCE_AREA = 2000;
 
 	private String kInput;
 	private double kX;
@@ -40,13 +43,14 @@ public class Vision extends Subsystem1816 {
 		drivetrain = Components.getInstance().drivetrain;
 	}
 
-	public void calculateStrafe() {
-		double deltaVision = CAMERA_WIDTH / 2 - getkX();
+	public void calculateHorizontalStrafe() {
+		readInput();
+		double deltaVision = CAMERA_WIDTH / 2 - kX;
 															
 		double strafe;
-
-		if (deltaVision < SLOW_RANGE && deltaVision > -SLOW_RANGE) {
-			if (deltaVision > ENDING_TOLERANCE)
+		
+		if (deltaVision < X_SLOW_RANGE && deltaVision > -X_SLOW_RANGE) {
+			if (deltaVision > X_ENDING_TOLERANCE)
 				strafe = 0.5 / 1.5;
 			else if (deltaVision < -3)
 				strafe = -0.5 / 1.5;
@@ -61,6 +65,27 @@ public class Vision extends Subsystem1816 {
 		
 		horizontalStrafe = strafe;
 		update();
+	}	
+	
+	public boolean isXAtTarget() {
+		return kX > (CAMERA_WIDTH / 2 - X_ENDING_TOLERANCE) && kX < (CAMERA_WIDTH / 2 + X_ENDING_TOLERANCE);
+	}
+	
+	public void calculateVerticalStrafe() {
+		readInput();
+		double areaError = ENDING_AREA-area;
+		
+		if(areaError < SLOW_RANGE_AREA){
+			verticalStrafe = 0.5/1.5;
+		} else {
+			verticalStrafe = 0.5;
+		}
+		
+		update();
+	}
+	
+	public boolean isYAtTarget() {
+		return area - ENDING_AREA > -ENDING_TOLERANCE_AREA;
 	}
 
 	public void readInput() {
