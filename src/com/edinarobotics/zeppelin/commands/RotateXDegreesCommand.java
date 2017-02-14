@@ -61,7 +61,7 @@ public class RotateXDegreesCommand extends Command implements PIDOutput {
 	}
 
 	protected boolean isFinished() {
-		return turnController.onTarget();
+		return turnController.onTarget() && gyro.getRate() <= 2;
 	}
 
 	protected void end() {
