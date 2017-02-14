@@ -3,11 +3,13 @@ package com.edinarobotics.zeppelin;
 import com.edinarobotics.zeppelin.subsystems.Collector;
 import com.edinarobotics.zeppelin.subsystems.Drivetrain;
 import com.edinarobotics.zeppelin.subsystems.Shooter;
+import com.edinarobotics.zeppelin.subsystems.Vision;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SerialPort;
 
 public class Components {
    
@@ -16,6 +18,7 @@ public class Components {
 	public Drivetrain drivetrain;
 	public Collector collector;
 	public Shooter shooter;
+	public Vision vision;
 	public AHRS navX;
 	public Compressor compressor;
 
@@ -57,6 +60,9 @@ public class Components {
 		collector = new Collector(COLLECTOR);
 		
 		shooter = new Shooter(SHOOTER, SHOOTER_ENCODER_A, SHOOTER_ENCODER_B);
+		
+		vision = new Vision(9600, SerialPort.Port.kMXP, 8,
+				SerialPort.Parity.kNone, SerialPort.StopBits.kOne);
 		
 		compressor = new Compressor(PCM_ID);
 		compressor.start();
