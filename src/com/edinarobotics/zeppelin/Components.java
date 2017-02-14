@@ -56,9 +56,11 @@ public class Components {
 	private Components() {
 		drivetrain = new Drivetrain(FRONT_RIGHT, FRONT_LEFT, MIDDLE, REAR_RIGHT, 
 				REAR_LEFT, PCM_ID, DROP_WHEEL_ID, ANCHOR_ID);
-		navX = new AHRS(SPI.Port.kMXP);
-		collector = new Collector(COLLECTOR);
 		
+		navX = new AHRS(SPI.Port.kMXP);
+		navX.reset();
+		
+		collector = new Collector(COLLECTOR);
 		shooter = new Shooter(SHOOTER, SHOOTER_ENCODER_A, SHOOTER_ENCODER_B);
 		
 		vision = new Vision(9600, SerialPort.Port.kMXP, 8,
