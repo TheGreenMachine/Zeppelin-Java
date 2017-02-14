@@ -7,15 +7,25 @@ public class AutonomousCommand extends CommandGroup {
 	public AutonomousCommand(AutoMode automode) {
 		
 		switch(automode) {
-			case DEFAULT:
+		
+			case BASELINE:				
+				addSequential(new DriveXInchesCommand(112));
 				
-				addSequential(new DriveXInchesCommand(12));
-				addSequential(new RotateXDegreesCommand(180));
+				break;
+				
+			case NOTHING:
+				
+				break;
+				
+			default:
+				
+				break;
+
 		}
 	}
 	
 	public enum AutoMode {
-		DEFAULT;
+		BASELINE, NOTHING;
 	}
 	
 }
