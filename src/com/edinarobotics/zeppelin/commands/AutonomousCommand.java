@@ -25,7 +25,11 @@ public class AutonomousCommand extends CommandGroup {
 	}
 	
 	public enum AutoMode {
-		BASELINE, NOTHING;
+		CENTER_GEAR,
+		LEFT_GEAR,
+		RIGHT_GEAR,
+		BASELINE, 
+		NOTHING;
 	}
 	
 }

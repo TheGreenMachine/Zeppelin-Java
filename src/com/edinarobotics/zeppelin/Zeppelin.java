@@ -12,9 +12,13 @@ import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Zeppelin extends IterativeRobot {
 
+	private SendableChooser<AutoMode> autoChooser;
+	
 	private Drivetrain drivetrain;
 	private SerialPort serialPort;
 
@@ -23,11 +27,17 @@ public class Zeppelin extends IterativeRobot {
 		Controls.getInstance();
 
 		drivetrain = Components.getInstance().drivetrain;
+		
+		setupDashboard();
 	}
 
 	public void autonomousInit() {
-		Command autoCommand = new AutonomousCommand(AutoMode.DEFAULT);
-		autoCommand.start();
+		if (autoChooser == null) {
+			setupDashboard();
+		}
+		
+		Command cmd = new AutonomousCommand((AutoMode) autoChooser.getSelected());
+		cmd.start();
 	}
 
 	public void autonomousPeriodic() {
@@ -75,6 +85,18 @@ public class Zeppelin extends IterativeRobot {
 
 	public void stop() {
 		drivetrain.setDrivetrain(0, 0, 0);
+	}
+	
+	private void setupDashboard() {
+		autoChooser = new SendableChooser<>();
+		
+		autoChooser.addObject("Center Gear", AutoMode.CENTER_GEAR);
+		autoChooser.addObject("Left Gear", AutoMode.LEFT_GEAR);
+		autoChooser.addObject("Right Gear", AutoMode.RIGHT_GEAR);
+		autoChooser.addObject("Baseline", AutoMode.BASELINE);
+		autoChooser.addObject("Nothing", AutoMode.NOTHING);
+
+		SmartDashboard.putData("Auto Chooser", autoChooser);
 	}
 
 }
