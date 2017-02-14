@@ -45,13 +45,18 @@ public class Components {
 	private static final int ANCHOR_ID = 1;
 	// End Pneumatic Constants
 	
+	// Encoder Constants
+	private static final int SHOOTER_ENCODER_A = 0;
+	private static final int SHOOTER_ENCODER_B = 1;
+	// End Encoder Constants
+	
 	private Components() {
 		drivetrain = new Drivetrain(FRONT_RIGHT, FRONT_LEFT, MIDDLE, REAR_RIGHT, 
 				REAR_LEFT, PCM_ID, DROP_WHEEL_ID, ANCHOR_ID);
 		navX = new AHRS(SPI.Port.kMXP);
 		collector = new Collector(COLLECTOR);
 		
-		//shooter = new Shooter(SHOOTER);
+		shooter = new Shooter(SHOOTER, SHOOTER_ENCODER_A, SHOOTER_ENCODER_B);
 		
 		compressor = new Compressor(PCM_ID);
 		compressor.start();
