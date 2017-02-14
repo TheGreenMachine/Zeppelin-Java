@@ -12,9 +12,11 @@ import com.edinarobotics.utils.gamepad.gamepadfilters.PowerFilter;
 import com.edinarobotics.zeppelin.commands.DriveXInchesCommand;
 import com.edinarobotics.zeppelin.commands.RotateXDegreesCommand;
 import com.edinarobotics.zeppelin.commands.SetCollectorStateCommand;
+import com.edinarobotics.zeppelin.commands.SetShooterStateCommand;
 import com.edinarobotics.zeppelin.commands.ToggleAnchorCommand;
 import com.edinarobotics.zeppelin.commands.ToggleDropWheelCommand;
 import com.edinarobotics.zeppelin.subsystems.Collector.CollectorState;
+import com.edinarobotics.zeppelin.subsystems.Shooter.ShooterSpeed;
 
 public class Controls {
 
@@ -47,7 +49,10 @@ public class Controls {
 		
 		gamepad0.dPadLeft().whenPressed(new RotateXDegreesCommand(-90f));
 		gamepad0.dPadDown().whenPressed(new RotateXDegreesCommand(0f));
-		gamepad0.dPadRight().whenPressed(new RotateXDegreesCommand(90f));		
+		gamepad0.dPadRight().whenPressed(new RotateXDegreesCommand(90f));
+		
+		gamepad0.leftTrigger().whenPressed(new SetShooterStateCommand(ShooterSpeed.ON));
+		gamepad0.leftTrigger().whenReleased(new SetShooterStateCommand(ShooterSpeed.OFF));
 	}
 
 	/**

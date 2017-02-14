@@ -6,13 +6,13 @@ import com.edinarobotics.zeppelin.subsystems.Shooter.ShooterSpeed;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class SetShooterSpeedCommand extends Command {
+public class SetShooterStateCommand extends Command {
 	
 	private Shooter shooter;
 	private ShooterSpeed shooterSpeed;
 	
-	public SetShooterSpeedCommand(ShooterSpeed shooterSpeed) {
-		super("setshooterspeedcommand");
+	public SetShooterStateCommand(ShooterSpeed shooterSpeed) {
+		super("setshooterstatecommand");
 		shooter = Components.getInstance().shooter;
 		this.shooterSpeed = shooterSpeed;
 		requires(shooter);
