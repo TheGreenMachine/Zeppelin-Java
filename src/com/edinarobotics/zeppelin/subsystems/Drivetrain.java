@@ -87,6 +87,10 @@ public class Drivetrain extends Subsystem1816 {
 		return frontLeft;
 	}
 	
+	public CANTalon getMiddle() {
+		return slideDrive.getMiddle();
+	}
+	
 	public void setDefaultCommand(Command command) {
 		if (getDefaultCommand() != null) {
 			super.getDefaultCommand().cancel();

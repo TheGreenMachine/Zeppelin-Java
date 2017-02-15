@@ -8,6 +8,18 @@ public class AutonomousCommand extends CommandGroup {
 		
 		switch(automode) {
 		
+			case CENTER_GEAR:
+				
+				break;
+				
+			case LEFT_GEAR:
+				
+				break;
+				
+			case RIGHT_GEAR:
+				
+				break;
+		
 			case BASELINE:				
 				addSequential(new DriveXInchesCommand(112));
 				

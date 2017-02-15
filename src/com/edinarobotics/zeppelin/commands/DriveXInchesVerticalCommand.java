@@ -6,7 +6,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class DriveXInchesCommand extends Command {
+public class DriveXInchesVerticalCommand extends Command {
 
 	private Drivetrain drivetrain;
 	private int inches;
@@ -17,8 +17,8 @@ public class DriveXInchesCommand extends Command {
 	private AHRS gyro;
 	private double heading;
 
-	public DriveXInchesCommand(int inches) {
-		super("drivexinchescommand");
+	public DriveXInchesVerticalCommand(int inches) {
+		super("drivexinchesverticalcommand");
 		drivetrain = Components.getInstance().drivetrain;
 		gyro = Components.getInstance().navX;
 		this.inches = inches;
@@ -34,7 +34,7 @@ public class DriveXInchesCommand extends Command {
 
 	@Override
 	protected void execute() {
-		double currentLeftValue = drivetrain.getFrontLeft().getEncPosition();
+		int currentLeftValue = drivetrain.getFrontLeft().getEncPosition();
 		double currentHeading = gyro.getAngle();
 
 		if (ticks > currentLeftValue) {

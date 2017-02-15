@@ -9,7 +9,7 @@ import com.edinarobotics.utils.gamepad.gamepadfilters.DeadzoneFilter;
 import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilter;
 import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilterSet;
 import com.edinarobotics.utils.gamepad.gamepadfilters.PowerFilter;
-import com.edinarobotics.zeppelin.commands.DriveXInchesCommand;
+import com.edinarobotics.zeppelin.commands.DriveXInchesVerticalCommand;
 import com.edinarobotics.zeppelin.commands.RotateXDegreesCommand;
 import com.edinarobotics.zeppelin.commands.SetCollectorStateCommand;
 import com.edinarobotics.zeppelin.commands.SetShooterStateCommand;
@@ -44,8 +44,8 @@ public class Controls {
 		gamepad0.diamondUp().whenPressed(new ToggleAnchorCommand());
 		gamepad0.diamondUp().whenReleased(new ToggleAnchorCommand());
 		
-		gamepad0.diamondLeft().whenPressed(new DriveXInchesCommand(-96));
-		gamepad0.diamondRight().whenPressed(new DriveXInchesCommand(96));
+		gamepad0.diamondLeft().whenPressed(new DriveXInchesVerticalCommand(-96));
+		gamepad0.diamondRight().whenPressed(new DriveXInchesVerticalCommand(96));
 		
 		gamepad0.dPadLeft().whenPressed(new RotateXDegreesCommand(-90f));
 		gamepad0.dPadDown().whenPressed(new RotateXDegreesCommand(0f));
