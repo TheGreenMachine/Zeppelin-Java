@@ -61,7 +61,7 @@ public class Components {
 		navX.reset();
 		
 		collector = new Collector(COLLECTOR);
-		shooter = new Shooter(SHOOTER, SHOOTER_ENCODER_A, SHOOTER_ENCODER_B);
+		// shooter = new Shooter(SHOOTER, SHOOTER_ENCODER_A, SHOOTER_ENCODER_B);
 		
 		vision = new Vision(9600, SerialPort.Port.kMXP, 8,
 				SerialPort.Parity.kNone, SerialPort.StopBits.kOne);

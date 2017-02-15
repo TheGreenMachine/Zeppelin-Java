@@ -21,7 +21,7 @@ public class AutonomousCommand extends CommandGroup {
 				break;
 		
 			case BASELINE:				
-				addSequential(new DriveXInchesCommand(112));
+				addSequential(new DriveXInchesVerticalCommand(112));
 				
 				break;
 				

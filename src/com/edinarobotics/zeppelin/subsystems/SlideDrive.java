@@ -24,5 +24,9 @@ public class SlideDrive extends RobotDrive {
 		arcadeDrive(verticalStrafe, rotation);
 		middle.set(horizontalStrafe);
 	}
+	
+	public CANTalon getMiddle() { 
+		return middle;
+	}
 
 }
