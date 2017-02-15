@@ -43,7 +43,7 @@ public class Vision extends Subsystem1816 {
 		drivetrain = Components.getInstance().drivetrain;
 	}
 
-	public void calculateHorizontalStrafe() {
+	public void runHorizontalStrafe() {
 		readInput();
 		double deltaVision = CAMERA_WIDTH / 2 - kX;
 															
@@ -71,7 +71,7 @@ public class Vision extends Subsystem1816 {
 		return kX > (CAMERA_WIDTH / 2 - X_ENDING_TOLERANCE) && kX < (CAMERA_WIDTH / 2 + X_ENDING_TOLERANCE);
 	}
 	
-	public void calculateVerticalStrafe() {
+	public void runVerticalStrafe() {
 		readInput();
 		double areaError = ENDING_AREA-area;
 		
