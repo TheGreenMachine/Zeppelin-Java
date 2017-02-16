@@ -25,7 +25,9 @@ public class Collector extends Subsystem1816 {
 	}
 
 	public enum CollectorState {
-		OFF(0.0), LOW(0.5), HIGH(1.0);
+		OFF(0.0), 
+		LOW(0.5), 
+		HIGH(1.0);
 
 		private double speed;
 

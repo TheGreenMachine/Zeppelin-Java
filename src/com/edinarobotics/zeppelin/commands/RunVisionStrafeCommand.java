@@ -7,10 +7,10 @@ import com.edinarobotics.zeppelin.subsystems.Vision;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class RunVisionStrafeCommand extends Command {
-	
+
 	private Vision vision;
 	private Drivetrain drivetrain;
-	
+
 	public RunVisionStrafeCommand() {
 		super("runvisionstrafecommand");
 		vision = Components.getInstance().vision;
@@ -26,7 +26,7 @@ public class RunVisionStrafeCommand extends Command {
 
 	@Override
 	protected void execute() {
-		vision.runHorizontalStrafe();		
+		vision.runHorizontalStrafe();
 	}
 
 	@Override

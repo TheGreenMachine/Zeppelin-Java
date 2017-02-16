@@ -4,12 +4,10 @@ import com.edinarobotics.utils.gamepad.Gamepad;
 import com.edinarobotics.utils.pid.PIDTuningManager;
 import com.edinarobotics.zeppelin.commands.AutonomousCommand;
 import com.edinarobotics.zeppelin.commands.AutonomousCommand.AutoMode;
-import com.edinarobotics.zeppelin.commands.GamepadDriveCommand;
 import com.edinarobotics.zeppelin.subsystems.Drivetrain;
 import com.edinarobotics.zeppelin.subsystems.Vision;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -20,7 +18,7 @@ public class Zeppelin extends IterativeRobot {
 
 	private SendableChooser<AutoMode> autoChooser;
 	private Command autoCommand;
-	
+
 	private Drivetrain drivetrain;
 	private Vision vision;
 
@@ -30,7 +28,7 @@ public class Zeppelin extends IterativeRobot {
 
 		drivetrain = Components.getInstance().drivetrain;
 		vision = Components.getInstance().vision;
-		
+
 		setupDashboard();
 	}
 
@@ -38,7 +36,7 @@ public class Zeppelin extends IterativeRobot {
 		if (autoChooser == null) {
 			setupDashboard();
 		}
-		
+
 		autoCommand = new AutonomousCommand((AutoMode) autoChooser.getSelected());
 		autoCommand.start();
 	}
@@ -48,18 +46,18 @@ public class Zeppelin extends IterativeRobot {
 	}
 
 	public void teleopInit() {
-//		if (autoCommand != null) {
-//			autoCommand.cancel();
-//		}
-		
+		// if (autoCommand != null) {
+		// autoCommand.cancel();
+		// }
+
 		Gamepad gamepad0 = Controls.getInstance().gamepad0;
-		//drivetrain.setDefaultCommand(new GamepadDriveCommand(gamepad0));
+		// drivetrain.setDefaultCommand(new GamepadDriveCommand(gamepad0));
 	}
- 
+
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 	}
- 
+
 	public void testInit() {
 		LiveWindow.setEnabled(false);
 		teleopInit();
@@ -81,10 +79,10 @@ public class Zeppelin extends IterativeRobot {
 	public void stop() {
 		drivetrain.setDrivetrain(0, 0, 0);
 	}
-	
+
 	private void setupDashboard() {
 		autoChooser = new SendableChooser<>();
-		
+
 		autoChooser.addObject("Center Gear", AutoMode.CENTER_GEAR);
 		autoChooser.addObject("Left Gear", AutoMode.LEFT_GEAR);
 		autoChooser.addObject("Right Gear", AutoMode.RIGHT_GEAR);

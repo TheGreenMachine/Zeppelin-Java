@@ -19,7 +19,7 @@ public class Vision extends Subsystem1816 {
 	private final int X_TOLERANCE = 30;
 	private final int X_SLOW_RANGE = 30;
 	private final int X_ENDING_TOLERANCE = 3;
-	
+
 	private final int ENDING_AREA = 32000;
 	private final int SLOW_RANGE_AREA = 6000;
 	private final int ENDING_TOLERANCE_AREA = 2000;
@@ -42,9 +42,9 @@ public class Vision extends Subsystem1816 {
 	public void runHorizontalStrafe() {
 		readInput();
 		double deltaVision = CAMERA_WIDTH / 2 - kX;
-															
+
 		double strafe;
-		
+
 		if (deltaVision < X_SLOW_RANGE && deltaVision > -X_SLOW_RANGE) {
 			if (deltaVision > X_ENDING_TOLERANCE)
 				strafe = 0.5 / 1.5;
@@ -58,28 +58,29 @@ public class Vision extends Subsystem1816 {
 			else
 				strafe = -0.5;
 		}
-		
+
 		horizontalStrafe = strafe;
 		update();
-	}	
-	
-	public boolean isXAtTarget() {
-		return kX > (CAMERA_WIDTH / 2 - X_ENDING_TOLERANCE) && kX < (CAMERA_WIDTH / 2 + X_ENDING_TOLERANCE);
 	}
-	
+
+	public boolean isXAtTarget() {
+		return kX > (CAMERA_WIDTH / 2 - X_ENDING_TOLERANCE) && kX < 
+				(CAMERA_WIDTH / 2 + X_ENDING_TOLERANCE);
+	}
+
 	public void runVerticalStrafe() {
 		readInput();
-		double areaError = ENDING_AREA-area;
-		
-		if(areaError < SLOW_RANGE_AREA){
-			verticalStrafe = 0.5/1.5;
+		double areaError = ENDING_AREA - area;
+
+		if (areaError < SLOW_RANGE_AREA) {
+			verticalStrafe = 0.5 / 1.5;
 		} else {
 			verticalStrafe = 0.5;
 		}
-		
+
 		update();
 	}
-	
+
 	public boolean isYAtTarget() {
 		return area - ENDING_AREA > -ENDING_TOLERANCE_AREA;
 	}
@@ -88,11 +89,12 @@ public class Vision extends Subsystem1816 {
 		int space1 = 0;
 		int space2 = 0;
 		int endBracket = 0;
-		
+
 		String input = serial.readString();
 
 		if (input.length() > 0) {
-			if (input.substring(0, 1).equals("{") && input.substring(input.length() - 1, input.length()).equals("}")) {
+			if (input.substring(0, 1).equals("{") && 
+					input.substring(input.length() - 1, input.length()).equals("}")) {
 				space1 = input.indexOf(' ');
 				space2 = input.substring(space1 + 1).indexOf(' ') + space1 + 1;
 				endBracket = input.indexOf('}');

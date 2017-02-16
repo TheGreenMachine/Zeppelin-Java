@@ -7,10 +7,10 @@ import com.edinarobotics.zeppelin.subsystems.Vision;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class RunVisionVerticalCommand extends Command {
-	
+
 	private Drivetrain drivetrain;
 	private Vision vision;
-	
+
 	public RunVisionVerticalCommand() {
 		super("runvisionverticalcommand");
 		drivetrain = Components.getInstance().drivetrain;
@@ -36,7 +36,7 @@ public class RunVisionVerticalCommand extends Command {
 
 	@Override
 	protected void end() {
-		drivetrain.setDrivetrain(0.0, 0.0, 0.0);;
+		drivetrain.setDrivetrain(0.0, 0.0, 0.0);
 	}
 
 	@Override

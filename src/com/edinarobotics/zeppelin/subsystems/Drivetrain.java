@@ -44,7 +44,7 @@ public class Drivetrain extends Subsystem1816 {
 		this.rearLeft.enableBrakeMode(true);
 
 		slideDrive = new SlideDrive(this.frontLeft, this.frontRight, middle);
-		
+
 		this.dropWheel = new Solenoid(pcmID, dropDown);
 		this.dropWheel.set(true);
 
@@ -59,7 +59,7 @@ public class Drivetrain extends Subsystem1816 {
 			horizontalStrafe *= SLOW_MODE_SPEED;
 			rotation *= SLOW_MODE_SPEED;
 		}
-		
+
 		slideDrive.drive(-verticalStrafe, horizontalStrafe, rotation);
 	}
 
@@ -78,19 +78,19 @@ public class Drivetrain extends Subsystem1816 {
 	public void toggleDropWheel() {
 		dropWheel.set(!dropWheel.get());
 	}
-	
+
 	public Solenoid getDropWheel() {
 		return dropWheel;
 	}
-	
+
 	public CANTalon getFrontLeft() {
 		return frontLeft;
 	}
-	
+
 	public CANTalon getMiddle() {
 		return slideDrive.getMiddle();
 	}
-	
+
 	public void setDefaultCommand(Command command) {
 		if (getDefaultCommand() != null) {
 			super.getDefaultCommand().cancel();

@@ -51,7 +51,7 @@ public class RotateXDegreesCommand extends Command implements PIDOutput {
 
 		turnController.setPID(PIDConfig.getP(kP), PIDConfig.getI(kI), 
 				PIDConfig.getD(kD), PIDConfig.getF(kF));
-		
+
 		PIDConfig.setSetpoint(degrees + initialDegrees);
 		PIDConfig.setValue(rotationSpeed);
 
