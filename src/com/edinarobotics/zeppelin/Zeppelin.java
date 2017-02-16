@@ -6,6 +6,7 @@ import com.edinarobotics.zeppelin.commands.AutonomousCommand;
 import com.edinarobotics.zeppelin.commands.AutonomousCommand.AutoMode;
 import com.edinarobotics.zeppelin.commands.GamepadDriveCommand;
 import com.edinarobotics.zeppelin.subsystems.Drivetrain;
+import com.edinarobotics.zeppelin.subsystems.Vision;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.SerialPort;
@@ -21,13 +22,14 @@ public class Zeppelin extends IterativeRobot {
 	private Command autoCommand;
 	
 	private Drivetrain drivetrain;
-	private SerialPort serialPort;
+	private Vision vision;
 
 	public void robotInit() {
 		Components.getInstance();
 		Controls.getInstance();
 
 		drivetrain = Components.getInstance().drivetrain;
+		vision = Components.getInstance().vision;
 		
 		setupDashboard();
 	}
@@ -46,28 +48,16 @@ public class Zeppelin extends IterativeRobot {
 	}
 
 	public void teleopInit() {
-		if (autoCommand != null) {
-			autoCommand.cancel();
-		}
+//		if (autoCommand != null) {
+//			autoCommand.cancel();
+//		}
 		
 		Gamepad gamepad0 = Controls.getInstance().gamepad0;
-		drivetrain.setDefaultCommand(new GamepadDriveCommand(gamepad0));
-		this.serialPort = new SerialPort(9600, SerialPort.Port.kMXP, 8,					//examine settings in RoboRealm:Serial to get the proper inputs. inputs in order are: baud rate, port type, data bits, parity, stop bits
-				SerialPort.Parity.kNone, SerialPort.StopBits.kOne);
+		//drivetrain.setDefaultCommand(new GamepadDriveCommand(gamepad0));
 	}
  
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		
-		try {
-			String temp = serialPort.readString();		
-
-			if (temp.length() > 0) {
-				System.out.println("Read String: " + temp);
-			}
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
 	}
  
 	public void testInit() {

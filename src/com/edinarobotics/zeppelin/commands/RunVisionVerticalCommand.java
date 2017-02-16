@@ -16,11 +16,12 @@ public class RunVisionVerticalCommand extends Command {
 		drivetrain = Components.getInstance().drivetrain;
 		vision = Components.getInstance().vision;
 		requires(vision);
+		requires(drivetrain);
 	}
 
 	@Override
 	protected void initialize() {
-		vision.initialize();
+
 	}
 
 	@Override

@@ -36,11 +36,7 @@ public class Vision extends Subsystem1816 {
 
 	@Override
 	public void update() {
-		drivetrain.setDrivetrain(verticalStrafe, horizontalStrafe, 0.0);
-	}
-	
-	public void initialize() {
-		drivetrain = Components.getInstance().drivetrain;
+		Components.getInstance().drivetrain.setDrivetrain(verticalStrafe, horizontalStrafe, 0.0);
 	}
 
 	public void runHorizontalStrafe() {
@@ -92,7 +88,7 @@ public class Vision extends Subsystem1816 {
 		int space1 = 0;
 		int space2 = 0;
 		int endBracket = 0;
-
+		
 		String input = serial.readString();
 
 		if (input.length() > 0) {

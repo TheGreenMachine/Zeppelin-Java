@@ -46,7 +46,7 @@ public class Drivetrain extends Subsystem1816 {
 		slideDrive = new SlideDrive(this.frontLeft, this.frontRight, middle);
 		
 		this.dropWheel = new Solenoid(pcmID, dropDown);
-		this.dropWheel.set(false);
+		this.dropWheel.set(true);
 
 		this.anchor = new Solenoid(pcmID, anchor);
 		this.anchor.set(false);

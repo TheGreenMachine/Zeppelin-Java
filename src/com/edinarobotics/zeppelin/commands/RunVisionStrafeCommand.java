@@ -16,16 +16,17 @@ public class RunVisionStrafeCommand extends Command {
 		vision = Components.getInstance().vision;
 		drivetrain = Components.getInstance().drivetrain;
 		requires(vision);
+		requires(drivetrain);
 	}
 
 	@Override
 	protected void initialize() {
-		vision.initialize();
+
 	}
 
 	@Override
 	protected void execute() {
-		vision.runHorizontalStrafe();
+		vision.runHorizontalStrafe();		
 	}
 
 	@Override
