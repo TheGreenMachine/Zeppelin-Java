@@ -2,28 +2,43 @@ package com.edinarobotics.zeppelin;
 
 import com.edinarobotics.utils.gamepad.Gamepad;
 import com.edinarobotics.utils.pid.PIDTuningManager;
-import com.edinarobotics.zeppelin.commands.GamepadDriveCommand;
+import com.edinarobotics.zeppelin.commands.AutonomousCommand;
+import com.edinarobotics.zeppelin.commands.AutonomousCommand.AutoMode;
 import com.edinarobotics.zeppelin.subsystems.Drivetrain;
+import com.edinarobotics.zeppelin.subsystems.Vision;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Zeppelin extends IterativeRobot {
 
+	private SendableChooser<AutoMode> autoChooser;
+	private Command autoCommand;
+
 	private Drivetrain drivetrain;
-	private SerialPort serialPort;
+	private Vision vision;
 
 	public void robotInit() {
 		Components.getInstance();
 		Controls.getInstance();
 
 		drivetrain = Components.getInstance().drivetrain;
+		vision = Components.getInstance().vision;
+
+		setupDashboard();
 	}
 
 	public void autonomousInit() {
+		if (autoChooser == null) {
+			setupDashboard();
+		}
 
+		autoCommand = new AutonomousCommand((AutoMode) autoChooser.getSelected());
+		autoCommand.start();
 	}
 
 	public void autonomousPeriodic() {
@@ -31,26 +46,18 @@ public class Zeppelin extends IterativeRobot {
 	}
 
 	public void teleopInit() {
+		// if (autoCommand != null) {
+		// autoCommand.cancel();
+		// }
+
 		Gamepad gamepad0 = Controls.getInstance().gamepad0;
-		//drivetrain.setDefaultCommand(new GamepadDriveCommand(gamepad0));
-		this.serialPort = new SerialPort(9600, SerialPort.Port.kMXP, 8,					//examine settings in RoboRealm:Serial to get the proper inputs. inputs in order are: baud rate, port type, data bits, parity, stop bits
-				SerialPort.Parity.kNone, SerialPort.StopBits.kOne);
+		// drivetrain.setDefaultCommand(new GamepadDriveCommand(gamepad0));
 	}
- 
+
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		
-		try {
-			String temp = serialPort.readString();		
-
-			if (temp.length() > 0) {
-				System.out.println("Read String: " + temp);
-			}
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
 	}
- 
+
 	public void testInit() {
 		LiveWindow.setEnabled(false);
 		teleopInit();
@@ -71,6 +78,18 @@ public class Zeppelin extends IterativeRobot {
 
 	public void stop() {
 		drivetrain.setDrivetrain(0, 0, 0);
+	}
+
+	private void setupDashboard() {
+		autoChooser = new SendableChooser<>();
+
+		autoChooser.addObject("Center Gear", AutoMode.CENTER_GEAR);
+		autoChooser.addObject("Left Gear", AutoMode.LEFT_GEAR);
+		autoChooser.addObject("Right Gear", AutoMode.RIGHT_GEAR);
+		autoChooser.addObject("Baseline", AutoMode.BASELINE);
+		autoChooser.addObject("Nothing", AutoMode.NOTHING);
+
+		SmartDashboard.putData("Auto Chooser", autoChooser);
 	}
 
 }

@@ -3,12 +3,10 @@ package com.edinarobotics.zeppelin.subsystems;
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.TalonControlMode;
-import com.edinarobotics.utils.rate.RampRateHelper;
 import com.edinarobotics.utils.subsystems.Subsystem1816;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drivetrain extends Subsystem1816 {
 
@@ -19,43 +17,26 @@ public class Drivetrain extends Subsystem1816 {
 	private double verticalStrafe, horizontalStrafe, rotation;
 
 	private boolean slowMode;
-	private static final double SLOW_MODE_SPEED = 0.50;
-	private final int ENCODER_THRESHOLD = 25;
-
-	private RampRateHelper ramp;
-	
-	private static final double kP = 0.50;
-	private static final double kI = 0.00;
-	private static final double kD = 0.00;
+	private static final double SLOW_MODE_SPEED = 0.75;
 
 	public Drivetrain(int frontRight, int frontLeft, int middle, int rearRight, 
 			int rearLeft, int pcmID, int dropDown, int anchor) {
-		ramp = new RampRateHelper(0.7, true, false);
-
 		this.frontRight = new CANTalon(frontRight);
 		this.frontRight.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		this.frontRight.setPID(kP, kI, kD);
-		this.frontRight.configEncoderCodesPerRev(10);
 		this.frontRight.enableBrakeMode(true);
-		this.frontRight.setVoltageRampRate(100);
-		this.frontRight.changeControlMode(TalonControlMode.Position);
+		this.frontRight.setVoltageRampRate(60);
 		this.frontRight.reverseSensor(true);
-		this.frontRight.setPosition(0);
 
 		this.frontLeft = new CANTalon(frontLeft);
 		this.frontLeft.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		this.frontLeft.setPID(kP, kI, kD);
-		this.frontLeft.configEncoderCodesPerRev(10);
 		this.frontLeft.enableBrakeMode(true);
-		this.frontLeft.setVoltageRampRate(100);
-		this.frontLeft.changeControlMode(TalonControlMode.Position);
+		this.frontLeft.setVoltageRampRate(60);
 		this.frontLeft.reverseSensor(true);
-		this.frontLeft.setPosition(0);
 
 		this.rearRight = new CANTalon(rearRight);
+		this.rearRight.enableBrakeMode(true);
 		this.rearRight.changeControlMode(TalonControlMode.Follower);
 		this.rearRight.set(frontRight);
-		this.rearRight.enableBrakeMode(true);
 
 		this.rearLeft = new CANTalon(rearLeft);
 		this.rearLeft.changeControlMode(TalonControlMode.Follower);
@@ -63,9 +44,9 @@ public class Drivetrain extends Subsystem1816 {
 		this.rearLeft.enableBrakeMode(true);
 
 		slideDrive = new SlideDrive(this.frontLeft, this.frontRight, middle);
-		
+
 		this.dropWheel = new Solenoid(pcmID, dropDown);
-		this.dropWheel.set(false);
+		this.dropWheel.set(true);
 
 		this.anchor = new Solenoid(pcmID, anchor);
 		this.anchor.set(false);
@@ -78,11 +59,8 @@ public class Drivetrain extends Subsystem1816 {
 			horizontalStrafe *= SLOW_MODE_SPEED;
 			rotation *= SLOW_MODE_SPEED;
 		}
-		
+
 		slideDrive.drive(-verticalStrafe, horizontalStrafe, rotation);
-		
-		SmartDashboard.putNumber("Left encoder value: ", frontLeft.getPosition());
-		SmartDashboard.putNumber("Right encoder value: ", frontRight.getPosition());
 	}
 
 	public void setDrivetrain(double verticalStrafe, double horizontalStrafe, double rotation) {
@@ -101,36 +79,16 @@ public class Drivetrain extends Subsystem1816 {
 		dropWheel.set(!dropWheel.get());
 	}
 
-	public void setPosition() {
-		frontLeft.setPosition(0.0);
-		frontRight.setPosition(0.0);
-	}
-	
-	public void setTarget(int ticks) {
-		frontLeft.enable();
-		frontRight.enable();
-		
-		frontLeft.set(ticks);
-		frontRight.set(ticks);
-		
-	}
-	
-	public void changeControlMode(TalonControlMode mode) {
-		frontLeft.changeControlMode(mode);
-		frontRight.changeControlMode(mode);
+	public Solenoid getDropWheel() {
+		return dropWheel;
 	}
 
-	public boolean isOnTarget(int ticks) {
-		return Math.abs(frontLeft.get() - ticks) < ENCODER_THRESHOLD
-				&& Math.abs(frontRight.get() - ticks) < ENCODER_THRESHOLD;
-	}
-	
-	public CANTalon getFrontRight() {
-		return frontRight;
-	}
-	
 	public CANTalon getFrontLeft() {
 		return frontLeft;
+	}
+
+	public CANTalon getMiddle() {
+		return slideDrive.getMiddle();
 	}
 
 	public void setDefaultCommand(Command command) {

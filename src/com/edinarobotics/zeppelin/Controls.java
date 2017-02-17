@@ -9,8 +9,10 @@ import com.edinarobotics.utils.gamepad.gamepadfilters.DeadzoneFilter;
 import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilter;
 import com.edinarobotics.utils.gamepad.gamepadfilters.GamepadFilterSet;
 import com.edinarobotics.utils.gamepad.gamepadfilters.PowerFilter;
-import com.edinarobotics.zeppelin.commands.DriveXInchesCommand;
+import com.edinarobotics.zeppelin.commands.DriveXInchesVerticalCommand;
 import com.edinarobotics.zeppelin.commands.RotateXDegreesCommand;
+import com.edinarobotics.zeppelin.commands.RunVisionStrafeCommand;
+import com.edinarobotics.zeppelin.commands.RunVisionVerticalCommand;
 import com.edinarobotics.zeppelin.commands.SetCollectorStateCommand;
 import com.edinarobotics.zeppelin.commands.ToggleAnchorCommand;
 import com.edinarobotics.zeppelin.commands.ToggleDropWheelCommand;
@@ -36,21 +38,24 @@ public class Controls {
 		gamepad0.rightBumper().whenPressed(new SetCollectorStateCommand(CollectorState.LOW));
 		gamepad0.rightBumper().whenReleased(new SetCollectorStateCommand(CollectorState.OFF));
 
-		// gamepad0.diamondDown().whenPressed(new SetShooterCommand(0.25));
-		// gamepad0.diamondDown().whenReleased(new SetShooterCommand(0.0));
-
 		gamepad0.diamondDown().whenPressed(new ToggleDropWheelCommand());
 		gamepad0.diamondDown().whenReleased(new ToggleDropWheelCommand());
 
 		gamepad0.diamondUp().whenPressed(new ToggleAnchorCommand());
 		gamepad0.diamondUp().whenReleased(new ToggleAnchorCommand());
 		
-		gamepad0.diamondLeft().whenPressed(new DriveXInchesCommand(-12));
-		gamepad0.diamondRight().whenPressed(new DriveXInchesCommand(12));
+		gamepad0.diamondLeft().whenPressed(new DriveXInchesVerticalCommand(-96));
+		gamepad0.diamondRight().whenPressed(new DriveXInchesVerticalCommand(96));
 		
 		gamepad0.dPadLeft().whenPressed(new RotateXDegreesCommand(-90f));
+		gamepad0.dPadDown().whenPressed(new RotateXDegreesCommand(0f));
 		gamepad0.dPadRight().whenPressed(new RotateXDegreesCommand(90f));
- 
+		
+		// gamepad0.leftTrigger().whenPressed(new SetShooterStateCommand(ShooterSpeed.ON));
+		// gamepad0.leftTrigger().whenReleased(new SetShooterStateCommand(ShooterSpeed.OFF));
+		
+		gamepad0.leftTrigger().whenPressed(new RunVisionStrafeCommand());
+		gamepad0.leftBumper().whenPressed(new RunVisionVerticalCommand());
 	}
 
 	/**

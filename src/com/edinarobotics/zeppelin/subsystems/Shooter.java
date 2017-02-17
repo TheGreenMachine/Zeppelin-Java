@@ -2,58 +2,53 @@ package com.edinarobotics.zeppelin.subsystems;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
+import com.ctre.CANTalon.TalonControlMode;
 import com.edinarobotics.utils.subsystems.Subsystem1816;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Encoder;
 
 public class Shooter extends Subsystem1816 {
 
-	private CANTalon shooter;
-	private double speed;
+	private CANTalon shooterTalon;
+	private Encoder encoder;
+	private ShooterSpeed shooterSpeed;
 
-	private final double P = 0.00005;
-	private final double I = 0.0;
-	private final double D = 0.0;
+	private static final double P = 0.01300;
+	private static final double I = 0.00012;
+	private static final double D = 2.00000;
+	private static final double F = 0.00000;
 
-	private static final double TARGET_SPEED = .9;
-	private static final int TARGET_RPM = 25000;
+	public Shooter(int shooterTalon, int encoderA, int encoderB) {
+		this.shooterTalon = new CANTalon(shooterTalon);
+		this.shooterTalon.changeControlMode(TalonControlMode.Speed);
+		this.shooterTalon.setFeedbackDevice(FeedbackDevice.valueOf(encoder.get()));
+		this.shooterTalon.setPID(P, I, D);
+		this.shooterTalon.setF(F);
 
-	private boolean active = false;
-
-	public Shooter(int shooter) {
-
-		this.shooter = new CANTalon(shooter);
-		// this.shooter.changeControlMode(TalonControlMode.Speed);
-		this.shooter.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		// this.shooter.setPID(P, I, D);
-		// this.shooter.configNominalOutputVoltage(+0.0f, -0.0f);
-		// this.shooter.configPeakOutputVoltage(+12.0f, -12.0f);
-
-	}
-
-	public void setSpeed(double speed) {
-		this.speed = speed;
-		update();
-	}
-
-	public CANTalon getShooter() {
-		return shooter;
+		encoder = new Encoder(encoderA, encoderB);
 	}
 
 	@Override
 	public void update() {
-
-		if (active) {
-			if (shooter.getSpeed() < TARGET_RPM) {
-				shooter.set(TARGET_SPEED);
-			} else {
-				shooter.set(0.0);
-			}
-		} else {
-			shooter.set(0.0);
-		}
-
-		SmartDashboard.putNumber("Shooter Speed", shooter.getSpeed());
+		shooterTalon.set(shooterSpeed.getSpeed());
 	}
 
+	public void setSpeed(ShooterSpeed speed) {
+		shooterSpeed = speed;
+		update();
+	}
+
+	public enum ShooterSpeed {
+		ON(3350), OFF(0);
+
+		int speed;
+
+		ShooterSpeed(int speed) {
+			this.speed = speed;
+		}
+
+		public int getSpeed() {
+			return speed;
+		}
+	}
 }

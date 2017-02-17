@@ -1,38 +1,31 @@
 package com.edinarobotics.zeppelin.commands;
 
-import com.ctre.CANTalon;
 import com.edinarobotics.zeppelin.Components;
 import com.edinarobotics.zeppelin.subsystems.Shooter;
+import com.edinarobotics.zeppelin.subsystems.Shooter.ShooterSpeed;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class SetShooterCommand extends Command {
+public class SetShooterStateCommand extends Command {
 
 	private Shooter shooter;
-	private int target;
+	private ShooterSpeed shooterSpeed;
 
-	private static final double TARGET_SPEED = .9;
-
-	public SetShooterCommand(int target) {
-		super("setshootercommand");
-		this.target = target;
+	public SetShooterStateCommand(ShooterSpeed shooterSpeed) {
+		super("setshooterstatecommand");
 		shooter = Components.getInstance().shooter;
+		this.shooterSpeed = shooterSpeed;
 		requires(shooter);
 	}
 
 	@Override
 	protected void initialize() {
-
+		shooter.setSpeed(shooterSpeed);
 	}
 
 	@Override
 	protected void execute() {
-		CANTalon talon = shooter.getShooter();
 
-		if (talon.getSpeed() < target)
-			talon.set(TARGET_SPEED);
-		else
-			talon.set(0.0);
 	}
 
 	@Override

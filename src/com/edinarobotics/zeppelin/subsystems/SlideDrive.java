@@ -14,12 +14,19 @@ public class SlideDrive extends RobotDrive {
 		super(frontLeftMotor, frontRightMotor);
 
 		middle = new CANTalon(middleMotor);
+		middle.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+		middle.enableBrakeMode(true);
+		middle.setVoltageRampRate(60);
 		middle.setInverted(true);
 	}
 
 	public void drive(double verticalStrafe, double horizontalStrafe, double rotation) {
 		arcadeDrive(verticalStrafe, rotation);
 		middle.set(horizontalStrafe);
+	}
+	
+	public CANTalon getMiddle() { 
+		return middle;
 	}
 
 }

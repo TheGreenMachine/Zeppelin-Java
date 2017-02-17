@@ -3,11 +3,13 @@ package com.edinarobotics.zeppelin;
 import com.edinarobotics.zeppelin.subsystems.Collector;
 import com.edinarobotics.zeppelin.subsystems.Drivetrain;
 import com.edinarobotics.zeppelin.subsystems.Shooter;
+import com.edinarobotics.zeppelin.subsystems.Vision;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SerialPort;
 
 public class Components {
    
@@ -16,10 +18,11 @@ public class Components {
 	public Drivetrain drivetrain;
 	public Collector collector;
 	public Shooter shooter;
+	public Vision vision;
 	public AHRS navX;
 	public Compressor compressor;
 
-	public Encoder frontLeftEncoder, frontRightEncoder;
+	public Encoder rearRightEncoder;
 	
 	// CANTalon Constants
 		// Drivetrain
@@ -44,25 +47,24 @@ public class Components {
 	private static final int DROP_WHEEL_ID = 0;
 	private static final int ANCHOR_ID = 1;
 	// End Pneumatic Constants
-		
+	
 	// Encoder Constants
-	private static final int FRONT_LEFT_ENCODER_A = 4;
-	private static final int FRONT_LEFT_ENCODER_B = 5;	
-	private static final int FRONT_RIGHT_ENCODER_A = 0;
-	private static final int FRONT_RIGHT_ENCODER_B = 1;	
+	private static final int SHOOTER_ENCODER_A = 0;
+	private static final int SHOOTER_ENCODER_B = 1;
 	// End Encoder Constants
 	
 	private Components() {
 		drivetrain = new Drivetrain(FRONT_RIGHT, FRONT_LEFT, MIDDLE, REAR_RIGHT, 
 				REAR_LEFT, PCM_ID, DROP_WHEEL_ID, ANCHOR_ID);
+		
 		navX = new AHRS(SPI.Port.kMXP);
-	
-		// frontLeftEncoder = new Encoder(FRONT_LEFT_ENCODER_A, FRONT_LEFT_ENCODER_B);
-		// frontRightEncoder = new Encoder(FRONT_RIGHT_ENCODER_A, FRONT_RIGHT_ENCODER_B);
+		navX.reset();
 		
 		collector = new Collector(COLLECTOR);
+		// shooter = new Shooter(SHOOTER, SHOOTER_ENCODER_A, SHOOTER_ENCODER_B);
 		
-		//shooter = new Shooter(SHOOTER);
+		vision = new Vision(9600, SerialPort.Port.kMXP, 8,
+				SerialPort.Parity.kNone, SerialPort.StopBits.kOne);
 		
 		compressor = new Compressor(PCM_ID);
 		compressor.start();
