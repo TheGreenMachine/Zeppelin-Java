@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Zeppelin extends IterativeRobot {
 
 	private SendableChooser<AutoMode> autoChooser;
-	private Command autoCommand;
+	private Command autoCommand = null;
 
 	private Drivetrain drivetrain;
 
@@ -44,9 +44,9 @@ public class Zeppelin extends IterativeRobot {
 	}
 
 	public void teleopInit() {
-		// if (autoCommand != null) {
-		// autoCommand.cancel();
-		// }
+		if (autoCommand != null) {
+			autoCommand.cancel();
+		}
 
 		Gamepad gamepad0 = Controls.getInstance().gamepad0;
 		drivetrain.setDefaultCommand(new GamepadDriveCommand(gamepad0));
@@ -85,7 +85,7 @@ public class Zeppelin extends IterativeRobot {
 		autoChooser.addObject("Left Gear", AutoMode.LEFT_GEAR);
 		autoChooser.addObject("Right Gear", AutoMode.RIGHT_GEAR);
 		autoChooser.addObject("Baseline", AutoMode.BASELINE);
-		autoChooser.addObject("Nothing", AutoMode.NOTHING);
+		autoChooser.addDefault("Nothing", AutoMode.NOTHING);
 
 		SmartDashboard.putData("Auto Chooser", autoChooser);
 	}
