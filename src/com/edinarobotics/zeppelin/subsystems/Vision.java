@@ -38,6 +38,13 @@ public class Vision extends Subsystem1816 {
 	public void update() {
 		Components.getInstance().drivetrain.setDrivetrain(verticalStrafe, horizontalStrafe, 0.0);
 	}
+	
+	public void runApproach(){
+		readInput();
+		calculateHorizontalStrafe();
+		calculateVerticalStrafe();
+		update();
+	}
 
 	public void runHorizontalStrafe() {
 		readInput();
@@ -62,6 +69,28 @@ public class Vision extends Subsystem1816 {
 		horizontalStrafe = strafe;
 		update();
 	}
+	
+	public void calculateHorizontalStrafe() {
+		double deltaVision = CAMERA_WIDTH / 2 - kX;
+
+		double strafe;
+
+		if (deltaVision < X_SLOW_RANGE && deltaVision > -X_SLOW_RANGE) {
+			if (deltaVision > X_ENDING_TOLERANCE)
+				strafe = 0.5 / 1.5;
+			else if (deltaVision < -3)
+				strafe = -0.5 / 1.5;
+			else
+				strafe = 0;
+		} else {
+			if (deltaVision > 0)
+				strafe = 0.5;
+			else
+				strafe = -0.5;
+		}
+
+		horizontalStrafe = strafe;
+	}
 
 	public boolean isXAtTarget() {
 		return kX > (CAMERA_WIDTH / 2 - X_ENDING_TOLERANCE) && kX < 
@@ -79,6 +108,16 @@ public class Vision extends Subsystem1816 {
 		}
 
 		update();
+	}
+	
+	public void calculateVerticalStrafe() {
+		double areaError = ENDING_AREA - area;
+
+		if (areaError < SLOW_RANGE_AREA) {
+			verticalStrafe = 0.5 / 1.5;
+		} else {
+			verticalStrafe = 0.5;
+		}
 	}
 
 	public boolean isYAtTarget() {
