@@ -17,19 +17,31 @@ public class DriveXInchesVerticalCommand extends Command {
 	private AHRS gyro;
 	private double heading;
 
+//	private PrintWriter printWriter;
+	
 	public DriveXInchesVerticalCommand(int inches) {
 		super("drivexinchesverticalcommand");
 		drivetrain = Components.getInstance().drivetrain;
 		gyro = Components.getInstance().navX;
 		this.inches = inches;
-		ticks = (inches * CONVERSION_FACTOR) + drivetrain.getFrontLeft().getEncPosition();
 		requires(drivetrain);
 	}
 
 	@Override
 	protected void initialize() {
 		heading = gyro.getAngle();
-		System.out.println("Initializing...");
+		drivetrain.getFrontLeft().setPosition(0);
+		ticks = (inches * CONVERSION_FACTOR) + drivetrain.getFrontLeft().getEncPosition();
+		System.out.println(drivetrain.getFrontLeft().getEncPosition());
+		System.out.println(ticks);
+//		System.out.println("Initializing...");
+		
+//		try {
+//			printWriter = new PrintWriter(new File("/usr/lvuser/logger.csv"));
+//		}
+//		catch(Exception e) {
+//			System.out.println(e.getMessage());
+//		}
 	}
 
 	@Override
@@ -41,18 +53,18 @@ public class DriveXInchesVerticalCommand extends Command {
 			if (currentLeftValue > (ticks - 1000)) {
 
 				if (Math.abs(currentHeading - heading) > 0.3) {
-					drivetrain.setDrivetrain(0.30, 0.0, -(currentHeading - heading) * .2);
+					drivetrain.setDrivetrain(0.30, 0.0, -(currentHeading - heading) * .1);
 				} else {
 					drivetrain.setDrivetrain(0.30, 0, 0);
 				}
-				System.out.println("1");
+//				System.out.println("1");
 			} else {
 				if (Math.abs(currentHeading - heading) > 0.3) {
 					drivetrain.setDrivetrain(0.70, 0, -(currentHeading - heading) * .1);
 				} else {
 					drivetrain.setDrivetrain(0.70, 0, 0);
 				}
-				System.out.println("2");
+//				System.out.println("2");
 			}
 		} else {
 			if (currentLeftValue < (ticks + 1000)) {
@@ -61,19 +73,32 @@ public class DriveXInchesVerticalCommand extends Command {
 				} else {
 					drivetrain.setDrivetrain(-0.30, 0, 0);
 				}
-				System.out.println("3");
+//				System.out.println("3");
 			} else {
 				if (Math.abs(currentHeading - heading) > 0.3) {
 					drivetrain.setDrivetrain(-0.70, 0, (currentHeading - heading) * .1);
 				} else {
 					drivetrain.setDrivetrain(-0.70, 0, 0);
 				}
-				System.out.println("4");
+//				System.out.println("4");
 			}
 		}
 
 		System.out.println("Left value: " + currentLeftValue + "; Left target: " + ticks);
-		System.out.println("Current heading: " + currentHeading + "; Target heading: " + heading);
+//		System.out.println("Current heading: " + currentHeading + "; Target heading: " + heading);
+		
+//		System.out.println("CV: " + currentLeftValue + "; T: " + ticks + "; V: " + drivetrain.getFrontLeft().get());
+		
+//		StringBuilder sb = new StringBuilder();
+//		
+//		sb.append(currentLeftValue);
+//		sb.append(',');
+//		sb.append(ticks);
+//		sb.append(',');
+//		sb.append(drivetrain.getFrontLeft().get());
+//		sb.append('\n');
+//
+//		printWriter.write(sb.toString());
 	}
 
 	@Override
@@ -84,6 +109,8 @@ public class DriveXInchesVerticalCommand extends Command {
 	@Override
 	protected void end() {
 		drivetrain.setDrivetrain(0.0, 0.0, 0.0);
+		drivetrain.getFrontLeft().setPosition(0);
+//		printWriter.close();
 	}
 
 	@Override

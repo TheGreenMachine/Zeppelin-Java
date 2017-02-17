@@ -4,8 +4,8 @@ import com.edinarobotics.utils.gamepad.Gamepad;
 import com.edinarobotics.utils.pid.PIDTuningManager;
 import com.edinarobotics.zeppelin.commands.AutonomousCommand;
 import com.edinarobotics.zeppelin.commands.AutonomousCommand.AutoMode;
+import com.edinarobotics.zeppelin.commands.GamepadDriveCommand;
 import com.edinarobotics.zeppelin.subsystems.Drivetrain;
-import com.edinarobotics.zeppelin.subsystems.Vision;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -20,14 +20,12 @@ public class Zeppelin extends IterativeRobot {
 	private Command autoCommand;
 
 	private Drivetrain drivetrain;
-	private Vision vision;
 
 	public void robotInit() {
 		Components.getInstance();
 		Controls.getInstance();
 
 		drivetrain = Components.getInstance().drivetrain;
-		vision = Components.getInstance().vision;
 
 		setupDashboard();
 	}
@@ -51,7 +49,7 @@ public class Zeppelin extends IterativeRobot {
 		// }
 
 		Gamepad gamepad0 = Controls.getInstance().gamepad0;
-		// drivetrain.setDefaultCommand(new GamepadDriveCommand(gamepad0));
+		drivetrain.setDefaultCommand(new GamepadDriveCommand(gamepad0));
 	}
 
 	public void teleopPeriodic() {

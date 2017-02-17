@@ -26,19 +26,19 @@ public class Components {
 	
 	// CANTalon Constants
 		// Drivetrain
-		private static final int FRONT_LEFT = 4;
-		private static final int FRONT_RIGHT = 5;
-		private static final int REAR_LEFT = 3;
-		private static final int REAR_RIGHT = 6;
-		private static final int MIDDLE = 7;
+		private static final int FRONT_LEFT = 2;
+		private static final int FRONT_RIGHT = 8;
+		private static final int REAR_LEFT = 1;
+		private static final int REAR_RIGHT = 9;
+		private static final int MIDDLE = 3;
 		// End Drivetrain
 		
 		// Collector
-		private static final int COLLECTOR = 2;
+		private static final int COLLECTOR = 11;
 		// End Collector
 		
 		// Shooter
-		private static final int SHOOTER = 1;
+		private static final int SHOOTER = 5;
 		// End Shooter
 	// End CANTalon Constants
 	

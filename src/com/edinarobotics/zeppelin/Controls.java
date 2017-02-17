@@ -55,7 +55,7 @@ public class Controls {
 		// gamepad0.leftTrigger().whenReleased(new SetShooterStateCommand(ShooterSpeed.OFF));
 		
 		gamepad0.leftTrigger().whenPressed(new RunVisionStrafeCommand());
-		gamepad0.leftBumper().whenPressed(new RunVisionVerticalCommand());
+		gamepad0.leftBumper().whenPressed(new DriveXInchesVerticalCommand(6));
 	}
 
 	/**

@@ -22,7 +22,7 @@ public class SlideDrive extends RobotDrive {
 
 	public void drive(double verticalStrafe, double horizontalStrafe, double rotation) {
 		arcadeDrive(verticalStrafe, rotation);
-		middle.set(horizontalStrafe);
+		//middle.set(horizontalStrafe);
 	}
 	
 	public CANTalon getMiddle() { 
