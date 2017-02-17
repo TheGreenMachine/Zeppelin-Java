@@ -9,20 +9,13 @@ public class Vision extends Subsystem1816 {
 
 	private SerialPort serial;
 
-	private Drivetrain drivetrain;
 	private double verticalStrafe;
 	private double horizontalStrafe;
 
 	private final int CAMERA_WIDTH = 640;
-	private final int CAMERA_HEIGHT = 480;
 
-	private final int X_TOLERANCE = 30;
 	private final int X_SLOW_RANGE = 30;
 	private final int X_ENDING_TOLERANCE = 3;
-
-	private final int ENDING_AREA = 32000;
-	private final int SLOW_RANGE_AREA = 6000;
-	private final int ENDING_TOLERANCE_AREA = 2000;
 
 	private String kInput;
 	private double kX;
@@ -42,7 +35,6 @@ public class Vision extends Subsystem1816 {
 	public void runApproach(){
 		readInput();
 		calculateHorizontalStrafe();
-		calculateVerticalStrafe();
 		update();
 	}
 
@@ -95,33 +87,6 @@ public class Vision extends Subsystem1816 {
 	public boolean isXAtTarget() {
 		return kX > (CAMERA_WIDTH / 2 - X_ENDING_TOLERANCE) && kX < 
 				(CAMERA_WIDTH / 2 + X_ENDING_TOLERANCE);
-	}
-
-	public void runVerticalStrafe() {
-		readInput();
-		double areaError = ENDING_AREA - area;
-
-		if (areaError < SLOW_RANGE_AREA) {
-			verticalStrafe = 0.5 / 1.5;
-		} else {
-			verticalStrafe = 0.5;
-		}
-
-		update();
-	}
-	
-	public void calculateVerticalStrafe() {
-		double areaError = ENDING_AREA - area;
-
-		if (areaError < SLOW_RANGE_AREA) {
-			verticalStrafe = 0.5 / 1.5;
-		} else {
-			verticalStrafe = 0.5;
-		}
-	}
-
-	public boolean isYAtTarget() {
-		return area - ENDING_AREA > -ENDING_TOLERANCE_AREA;
 	}
 
 	public void readInput() {

@@ -12,7 +12,6 @@ import com.edinarobotics.utils.gamepad.gamepadfilters.PowerFilter;
 import com.edinarobotics.zeppelin.commands.DriveXInchesVerticalCommand;
 import com.edinarobotics.zeppelin.commands.RotateXDegreesCommand;
 import com.edinarobotics.zeppelin.commands.RunVisionStrafeCommand;
-import com.edinarobotics.zeppelin.commands.RunVisionVerticalCommand;
 import com.edinarobotics.zeppelin.commands.SetCollectorStateCommand;
 import com.edinarobotics.zeppelin.commands.ToggleAnchorCommand;
 import com.edinarobotics.zeppelin.commands.ToggleDropWheelCommand;
