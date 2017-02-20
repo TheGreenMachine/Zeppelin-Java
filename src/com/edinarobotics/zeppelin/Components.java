@@ -1,5 +1,7 @@
 package com.edinarobotics.zeppelin;
 
+import com.edinarobotics.zeppelin.subsystems.Augers;
+import com.edinarobotics.zeppelin.subsystems.Climber;
 import com.edinarobotics.zeppelin.subsystems.Collector;
 import com.edinarobotics.zeppelin.subsystems.Drivetrain;
 import com.edinarobotics.zeppelin.subsystems.Shooter;
@@ -7,7 +9,6 @@ import com.edinarobotics.zeppelin.subsystems.Vision;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SerialPort;
 
@@ -21,8 +22,9 @@ public class Components {
 	public Vision vision;
 	public AHRS navX;
 	public Compressor compressor;
-
-	public Encoder rearRightEncoder;
+	public Augers augers;
+	public Climber climber;
+	
 	
 	// CANTalon Constants
 		// Drivetrain
@@ -34,18 +36,29 @@ public class Components {
 		// End Drivetrain
 		
 		// Collector
-		private static final int COLLECTOR = 11;
+		private static final int COLLECTOR = 5;
 		// End Collector
 		
 		// Shooter
-		private static final int SHOOTER = 5;
+		private static final int LEFT_SHOOTER = 10;
+		private static final int RIGHT_SHOOTER = 11;
 		// End Shooter
+		
+		// Augers
+		private static final int RIGHT_AUGER = 6;
+		private static final int LEFT_AUGER = 7;
+		// End Augers
+		
+		// Climber
+		private static final int CLIMBER = 4;
+		// End Climber
 	// End CANTalon Constants
 	
 	// Pneumatic Constants
 	private static final int PCM_ID = 10;
-	private static final int DROP_WHEEL_ID = 0;
-	private static final int ANCHOR_ID = 1;
+	private static final int DROP_WHEEL_ID = 7;
+	private static final int ANCHOR_ID = 6;
+	private static final int GEAR_COLLECTOR = 5;
 	// End Pneumatic Constants
 	
 	// Encoder Constants
@@ -60,8 +73,12 @@ public class Components {
 		navX = new AHRS(SPI.Port.kMXP);
 		navX.reset();
 		
-		collector = new Collector(COLLECTOR);
-		// shooter = new Shooter(SHOOTER, SHOOTER_ENCODER_A, SHOOTER_ENCODER_B);
+		collector = new Collector(COLLECTOR, PCM_ID, GEAR_COLLECTOR);
+		// shooter = new Shooter(SHOOTER);
+		
+		augers = new Augers(LEFT_AUGER, RIGHT_AUGER);
+		
+		climber = new Climber(CLIMBER);
 		
 		vision = new Vision(9600, SerialPort.Port.kMXP, 8,
 				SerialPort.Parity.kNone, SerialPort.StopBits.kOne);

@@ -1,5 +1,6 @@
 package com.edinarobotics.zeppelin.commands;
 
+import com.edinarobotics.utils.log.Logging;
 import com.edinarobotics.utils.pid.PIDConfig;
 import com.edinarobotics.utils.pid.PIDTuningManager;
 import com.edinarobotics.zeppelin.Components;
@@ -20,14 +21,17 @@ public class RotateXDegreesCommand extends Command implements PIDOutput {
 	private PIDConfig PIDConfig;
 	private double rotationSpeed;
 
-	private static final double kP = 0.015;
-	private static final double kI = 0.00;
-	private static final double kD = 0.00;
-	private static final double kF = 0.00;
+	private static final double kP = 0.025;
+	private static final double kI = 0.0000;
+	private static final double kD = 0.0000;
+	private static final double kF = 0.000;
+	
+	private Logging logging;
 
 	public RotateXDegreesCommand(float degrees) {
 		super("rotatexdegreescommand");
 		gyro = Components.getInstance().navX;
+		gyro.reset();
 
 		turnController = new PIDController(kP, kI, kD, kF, gyro, this);
 		turnController.setOutputRange(-0.5, 0.5);
@@ -37,13 +41,14 @@ public class RotateXDegreesCommand extends Command implements PIDOutput {
 		PIDConfig = PIDTuningManager.getInstance().getPIDConfig("RotateXDegrees");
 
 		this.degrees = degrees;
-		initialDegrees = (float) gyro.getAngle();
 		drivetrain = Components.getInstance().drivetrain;
 		requires(drivetrain);
 	}
 
 	protected void initialize() {
-		turnController.setSetpoint(degrees + initialDegrees);
+		logging = new Logging("RotateXDegreesCommand - " + System.currentTimeMillis());
+		logging.log("currentGyro, targetGyro");
+		turnController.setSetpoint(degrees);
 	}
 
 	protected void execute() {
@@ -52,12 +57,14 @@ public class RotateXDegreesCommand extends Command implements PIDOutput {
 		turnController.setPID(PIDConfig.getP(kP), PIDConfig.getI(kI), 
 				PIDConfig.getD(kD), PIDConfig.getF(kF));
 
-		PIDConfig.setSetpoint(degrees + initialDegrees);
+		PIDConfig.setSetpoint(degrees);
 		PIDConfig.setValue(rotationSpeed);
 
 		drivetrain.setDrivetrain(0.0, 0.0, rotationSpeed);
 		System.out.println("Target:" + (degrees + initialDegrees));
 		System.out.println("Current: " + gyro.getAngle());
+		
+		logging.log(gyro.getAngle()+", "+(gyro.getAngle() + degrees));
 	}
 
 	protected boolean isFinished() {
@@ -66,6 +73,7 @@ public class RotateXDegreesCommand extends Command implements PIDOutput {
 
 	protected void end() {
 		drivetrain.setDrivetrain(0.0, 0.0, 0.0);
+		logging.close();
 	}
 
 	protected void interrupted() {
@@ -76,4 +84,5 @@ public class RotateXDegreesCommand extends Command implements PIDOutput {
 	public void pidWrite(double output) {
 		rotationSpeed = output;
 	}
+	
 }

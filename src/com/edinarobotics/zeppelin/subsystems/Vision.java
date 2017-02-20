@@ -12,9 +12,9 @@ public class Vision extends Subsystem1816 {
 	private double verticalStrafe;
 	private double horizontalStrafe;
 
-	private final int CAMERA_WIDTH = 640;
+	private final int CAMERA_WIDTH = 800;
 
-	private final int X_SLOW_RANGE = 30;
+	private final int X_SLOW_RANGE = 60;
 	private final int X_ENDING_TOLERANCE = 3;
 
 	private String kInput;
@@ -29,7 +29,7 @@ public class Vision extends Subsystem1816 {
 
 	@Override
 	public void update() {
-		Components.getInstance().drivetrain.setDrivetrain(verticalStrafe, horizontalStrafe, 0.0);
+		Components.getInstance().drivetrain.setHorizontalStrafe(horizontalStrafe);
 	}
 	
 	public void runApproach(){
@@ -45,17 +45,24 @@ public class Vision extends Subsystem1816 {
 		double strafe;
 
 		if (deltaVision < X_SLOW_RANGE && deltaVision > -X_SLOW_RANGE) {
-			if (deltaVision > X_ENDING_TOLERANCE)
-				strafe = 0.5 / 1.5;
-			else if (deltaVision < -3)
-				strafe = -0.5 / 1.5;
-			else
+			if (deltaVision > X_ENDING_TOLERANCE) {
+				strafe = -0.38 / 1.6;
+				System.out.println("1");
+			} else if (deltaVision < -3) {
+				strafe = 0.38 / 1.6;
+				System.out.println("2");
+			} else {
 				strafe = 0;
+				System.out.println("3");
+			}
 		} else {
-			if (deltaVision > 0)
-				strafe = 0.5;
-			else
-				strafe = -0.5;
+			if (deltaVision > 0) {
+				strafe = -0.38;
+				System.out.println("4");
+			} else {
+				strafe = 0.38;
+				System.out.println("5");
+			}
 		}
 
 		horizontalStrafe = strafe;
@@ -94,38 +101,49 @@ public class Vision extends Subsystem1816 {
 		int space2 = 0;
 		int endBracket = 0;
 
-		String input = serial.readString();
+		try {
+			
+			String input = serial.readString();
 
-		if (input.length() > 0) {
-			if (input.substring(0, 1).equals("{") && 
-					input.substring(input.length() - 1, input.length()).equals("}")) {
-				space1 = input.indexOf(' ');
-				space2 = input.substring(space1 + 1).indexOf(' ') + space1 + 1;
-				endBracket = input.indexOf('}');
+			if (input.length() > 0) {
+				if (input.startsWith("{") && input.endsWith("}")) {
+					space1 = input.indexOf(' ');
+					space2 = input.substring(space1 + 1).indexOf(' ') + space1 + 1;
+					endBracket = input.indexOf('}');
 
-				if (space1 != 1) {
-					kX = Integer.parseInt(input.substring(1, space1), 10);
-					kY = Integer.parseInt(input.substring(space1 + 1, space2), 10);
-					area = Integer.parseInt(input.substring(space2 + 1, endBracket), 10);
-				} else if (input.substring(0, 1).equals("{")) {
-					kInput = input;
-				} else if (input.substring(input.length() - 1, input.length()).equals("}")) {
-					kInput += input;
-					if (kInput.substring(0, 1).equals("{")
-							&& kInput.substring(kInput.length() - 1, kInput.length()).equals("}")) {
-						space1 = kInput.indexOf(' ');
-						space2 = kInput.substring(space1 + 1).indexOf(' ') + space1 + 1;
-						if (space1 != 1) {
-							kX = Integer.parseInt(kInput.substring(1, space1), 10);
-							kY = Integer.parseInt(kInput.substring(space1 + 1, space2), 10);
-							area = Integer.parseInt(input.substring(space2 + 1, endBracket), 10);
+					if (space1 != 1) {
+						kX = Integer.parseInt(input.substring(1, space1), 10);
+						kY = Integer.parseInt(input.substring(space1 + 1, space2), 10);
+						area = Integer.parseInt(input.substring(space2 + 1, endBracket), 10);
+					} else if (input.substring(0, 1).equals("{")) {
+						kInput = input;
+					} else if (input.substring(input.length() - 1, input.length()).equals("}")) {
+						kInput += input;
+						if (kInput.substring(0, 1).equals("{")
+								&& kInput.substring(kInput.length() - 1, kInput.length()).equals("}")) {
+							space1 = kInput.indexOf(' ');
+							space2 = kInput.substring(space1 + 1).indexOf(' ') + space1 + 1;
+							if (space1 != 1) {
+								kX = Integer.parseInt(kInput.substring(1, space1), 10);
+								kY = Integer.parseInt(kInput.substring(space1 + 1, space2), 10);
+								area = Integer.parseInt(input.substring(space2 + 1, endBracket), 10);
+							}
+						} else {
+							kInput = "";
 						}
-					} else {
-						kInput = "";
 					}
 				}
 			}
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			kX = (CAMERA_WIDTH / 2);
+			kY = 300;
+			area = 32000;
+			verticalStrafe = 0.0;
+			horizontalStrafe = 0.0;
 		}
+	
 	}
 
 	public double getkX() {
@@ -138,6 +156,14 @@ public class Vision extends Subsystem1816 {
 
 	public double getArea() {
 		return area;
+	}
+	
+	public double getHorizontalStrafe() {
+		return horizontalStrafe;
+	}
+	
+	public double getVerticalStrafe() {
+		return verticalStrafe;
 	}
 
 }

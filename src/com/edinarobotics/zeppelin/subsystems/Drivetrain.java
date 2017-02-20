@@ -46,7 +46,7 @@ public class Drivetrain extends Subsystem1816 {
 		slideDrive = new SlideDrive(this.frontLeft, this.frontRight, middle);
 
 		this.dropWheel = new Solenoid(pcmID, dropDown);
-		this.dropWheel.set(true);
+		this.dropWheel.set(false);
 
 		this.anchor = new Solenoid(pcmID, anchor);
 		this.anchor.set(false);
@@ -79,6 +79,14 @@ public class Drivetrain extends Subsystem1816 {
 		dropWheel.set(!dropWheel.get());
 	}
 
+	public void setDropWheel(boolean kValue) {
+		dropWheel.set(kValue);
+	}
+	
+	public void setAnchors(boolean kValue) {
+		anchor.set(kValue);
+	}
+	
 	public Solenoid getDropWheel() {
 		return dropWheel;
 	}
@@ -104,6 +112,7 @@ public class Drivetrain extends Subsystem1816 {
 
 	public void setVerticalStrafe(double verticalStrafe) {
 		this.verticalStrafe = verticalStrafe;
+		update();
 	}
 
 	public double getRotation() {
@@ -112,6 +121,7 @@ public class Drivetrain extends Subsystem1816 {
 
 	public void setRotation(double rotation) {
 		this.rotation = rotation;
+		update();
 	}
 
 	public double getHorizontalStrafe() {
@@ -120,6 +130,7 @@ public class Drivetrain extends Subsystem1816 {
 
 	public void setHorizontalStrafe(double horizontalStrafe) {
 		this.horizontalStrafe = horizontalStrafe;
+		update();
 	}
 
 	public void setSlowMode(boolean slowMode) {

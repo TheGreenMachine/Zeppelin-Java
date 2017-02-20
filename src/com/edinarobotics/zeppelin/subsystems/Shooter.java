@@ -9,33 +9,43 @@ import edu.wpi.first.wpilibj.Encoder;
 
 public class Shooter extends Subsystem1816 {
 
-	private CANTalon shooterTalon;
-	private Encoder encoder;
+	private CANTalon leftShooter, rightShooter;
 	private ShooterSpeed shooterSpeed;
+	private boolean autoRunning = false;
 
 	private static final double P = 0.01300;
 	private static final double I = 0.00012;
 	private static final double D = 2.00000;
 	private static final double F = 0.00000;
-
-	public Shooter(int shooterTalon, int encoderA, int encoderB) {
-		this.shooterTalon = new CANTalon(shooterTalon);
-		this.shooterTalon.changeControlMode(TalonControlMode.Speed);
-		this.shooterTalon.setFeedbackDevice(FeedbackDevice.valueOf(encoder.get()));
-		this.shooterTalon.setPID(P, I, D);
-		this.shooterTalon.setF(F);
-
-		encoder = new Encoder(encoderA, encoderB);
+	
+	public Shooter(int leftShooter, int rightShooter) {
+		this.rightShooter = new CANTalon(rightShooter);
+		this.rightShooter.changeControlMode(TalonControlMode.Speed);
+		this.rightShooter.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+		this.rightShooter.setPID(P, I, D);
+		this.rightShooter.setF(F);
+		
+		this.leftShooter = new CANTalon(leftShooter);
+		this.leftShooter.changeControlMode(TalonControlMode.Follower);
+		this.leftShooter.set(rightShooter);
 	}
 
 	@Override
 	public void update() {
-		shooterTalon.set(shooterSpeed.getSpeed());
+		rightShooter.set(shooterSpeed.getSpeed());
 	}
 
 	public void setSpeed(ShooterSpeed speed) {
 		shooterSpeed = speed;
 		update();
+	}
+	
+	public void setAutoRunning(boolean value) {
+		autoRunning = value;
+	}
+	
+	public boolean isAutoRunning() {
+		return autoRunning;
 	}
 
 	public enum ShooterSpeed {
